@@ -8,26 +8,28 @@ import us.verif.bot.Helpers;
 import us.verif.bot.Sql;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
-
+import java.util.Calendar;
+import java.util.Date;
 
 public class Auth extends Command {
 
     private JDA jda;
 
-    public Auth() {
+    public Auth(JDA jda) {
+        this.jda = jda;
         super.name = "auth";
+        super.guildOnly = false;
     }
 
     @Override
     protected void execute(CommandEvent event) {
 
         final String inputtedKey = event.getArgs();
+        String guildID = Sql.getGuildFromKey(inputtedKey);
 
-        if (Sql.activatedServersHas(event.getGuild().getId())) {
-            if (Sql.containsServerKey(event.getGuild().getId()) && Sql.keyIsForGuild(inputtedKey, event.getGuild().getId())) {
+            if (Sql.containsKey(inputtedKey)) {
+
                 if (event.getArgs().isEmpty()) return;
-
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 Date today = new Date();
                 Calendar cal = Calendar.getInstance();
@@ -37,32 +39,31 @@ public class Auth extends Command {
                 try {
                     amount = Integer.parseInt(storedTime.split(" ")[0]);
                 } catch (Exception e) {
-
                     return;
                 }
                 Date expireDate = null;
                 String role = Sql.getKeyRole(inputtedKey);
                 switch (storedTime.split(" ")[1]) {
                     case "SECOND":
-                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
+                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), guildID, role)) {
                             cal.add(Calendar.SECOND, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + event.getGuild().getId() + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
+                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
 
                         } else {
                             cal.add(Calendar.SECOND, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
 
                         }
                         break;
                     case "MINUTE":
-                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
+                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), guildID, role)) {
                             System.out.println("exists");
-                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), event.getGuild().getId()));
+                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.MINUTE, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + event.getGuild().getId() + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
+                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
 
                         } else {
                             cal.add(Calendar.MINUTE, amount);
@@ -73,77 +74,74 @@ public class Auth extends Command {
                         break;
                     case "HOUR":
                         if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
-                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), event.getGuild().getId()));
+                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.HOUR, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + event.getGuild().getId() + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
+                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
 
                         } else {
                             cal.add(Calendar.HOUR, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
 
                         }
                         break;
                     case "DAY":
                         if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
-                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), event.getGuild().getId()));
+                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.DATE, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + event.getGuild().getId() + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
+                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
 
                         } else {
                             cal.add(Calendar.DATE, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
 
                         }
                         break;
                     case "MONTH":
                         if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
-                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), event.getGuild().getId()));
+                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.MONTH, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + event.getGuild().getId() + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
+                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
 
                         } else {
                             cal.add(Calendar.MONTH, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
 
                         }
                         break;
                     case "YEAR":
                         if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
-                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), event.getGuild().getId()));
+                            cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.YEAR, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + event.getGuild().getId() + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
+                            Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
 
                         } else {
                             cal.add(Calendar.YEAR, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
 
                         }
                         break;
                     case "LIFETIME":
                         cal.add(Calendar.YEAR, 200);
                         expireDate = cal.getTime();
-                        Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                        Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
                         break;
                 }
+                Role keyRole = jda.getGuildById(guildID).getRolesByName(Sql.getKeyRole(inputtedKey), true).get(0);
+                jda.getGuildById(guildID).getController().addSingleRoleToMember(jda.getGuildById(guildID).getMemberById(event.getAuthor().getId()), keyRole).queue();
 
-                Role keyRole = event.getGuild().getRolesByName(Sql.getKeyRole(inputtedKey), true).get(0);
-                event.getGuild().getController().addSingleRoleToMember(event.getMember(), keyRole).queue();
-
-                Helpers.sendPrivateMessage(event.getAuthor(), "RECEIPT: You used the one-time activation key `" + inputtedKey +
-                        "` to gain access to `" + event.getGuild().getName() + "` with the role `" + Sql.getKeyRole(inputtedKey) + "`. Your `" + storedTime + "` activation will expire on `" + dateFormat.format(expireDate) + "`.");
-
+                event.reply("RECEIPT: You used the one-time activation key `" + inputtedKey +
+                        "` to gain access to `" + jda.getGuildById(guildID).getName() + "` with the role `" + Sql.getKeyRole(inputtedKey) + "`. Your `" + storedTime + "` activation will expire on `" + dateFormat.format(expireDate) + "`.");
                 Sql.execute("Update", "delete from `serverkeys` where `key` = '" + inputtedKey + "';");
             } else {
                 event.reply("The entered key either does not exist or is already used.");
             }
-        }
     }
 }

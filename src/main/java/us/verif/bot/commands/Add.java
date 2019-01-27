@@ -19,7 +19,7 @@ public class Add extends Command {
     protected void execute(CommandEvent event) {
         if (Sql.activatedServersHas(event.getGuild().getId())) {
             if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(ADMINISTRATOR)) {
-                if(event.getArgs().isEmpty()) return;
+                if (event.getArgs().isEmpty()) return;
 
                 if (event.getArgs().split(":")[0].equalsIgnoreCase("all")) {
                     String role = event.getArgs().split(":")[1];

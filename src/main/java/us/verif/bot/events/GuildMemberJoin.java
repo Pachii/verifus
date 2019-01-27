@@ -9,7 +9,7 @@ public class GuildMemberJoin extends ListenerAdapter {
     public void onGuildMemberJoin(GuildMemberJoinEvent event) {
 
         if (Sql.activatedServersHas(event.getGuild().getId())) {
-            
+
             if (Sql.userExistsInDatabaseWithGuild(event.getUser().getId(), event.getGuild().getId())) {
                 for (String role : Sql.getUserRoles(event.getGuild().getId(), event.getUser().getId())) {
                     Role finalRole = event.getGuild().getRolesByName(role, false).get(0);

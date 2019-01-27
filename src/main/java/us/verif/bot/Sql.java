@@ -82,6 +82,19 @@ public class Sql {
         return false;
     }
 
+    public static boolean containsKey(String key) {
+        try (Connection connection = DriverManager.getConnection(Bot.url, Bot.user, Bot.password); Statement statement = connection.createStatement()) {
+            statement.executeUpdate("use verifus;");
+            ResultSet rs = statement.executeQuery("select * from `serverkeys` where `key` = '" + key + "';");
+            if (rs.next()) {
+                return true;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
     public static Date activationExpireDate(String guildID) {
         try (Connection connection = DriverManager.getConnection(Bot.url, Bot.user, Bot.password); Statement statement = connection.createStatement()) {
             statement.executeUpdate("use verifus;");
@@ -167,17 +180,17 @@ public class Sql {
         return null;
     }
 
-    public static boolean userExistsInDatabase(String user) {
+    public static String getGuildFromKey(String key) {
         try (Connection connection = DriverManager.getConnection(Bot.url, Bot.user, Bot.password); Statement statement = connection.createStatement()) {
             statement.executeUpdate("use verifus;");
-            ResultSet rs = statement.executeQuery("select `userID` from `verifiedusers` where `userID` = '" + user + "';");
+            ResultSet rs = statement.executeQuery("select `guildID` from `serverkeys` where `key` = '" + key + "';");
             if (rs.next()) {
-                return true;
+                return rs.getString("guildID");
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 
     public static boolean userExistsInDatabaseWithGuildRole(String user, String guildID, String role) {

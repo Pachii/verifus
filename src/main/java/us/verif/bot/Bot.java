@@ -14,11 +14,10 @@ import java.util.Timer;
 
 public class Bot {
 
+    public static final String version = "0.7.0 β";
     static final String url = "jdbc:mysql://localhost:3306/verifus?useSSL=false&allowPublicKeyRetrieval=true";
     static final String user = "root";
     static final String password = "Verifus168";
-
-    public static final String version = "0.6.6 β";
 
     public static void main(String[] args) throws Exception {
 
@@ -32,7 +31,7 @@ public class Bot {
 
         CommandClientBuilder builder = new CommandClientBuilder();
         builder.setPrefix("/");
-        builder.addCommand(new SerialCreation()).addCommand(new GenerateKeys()).addCommand(new BotActivation()).addCommand(new Auth()).addCommand(new Revoke()).addCommand(new Remove()).addCommand(new Add()).addCommand(new Help()).addCommand(new Check()).addCommand(new Database());
+        builder.addCommand(new SerialCreation()).addCommand(new GenerateKeys()).addCommand(new BotActivation()).addCommand(new Auth(api)).addCommand(new Revoke()).addCommand(new Remove()).addCommand(new Add()).addCommand(new Help()).addCommand(new Check()).addCommand(new Database());
         builder.setOwnerId("426839909421154314");
         builder.setGame(Game.of(Game.GameType.LISTENING, "/help"));
         builder.setHelpWord("unusedhelp");

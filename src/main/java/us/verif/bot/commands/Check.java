@@ -10,6 +10,7 @@ public class Check extends Command {
     public Check() {
         super.name = "check";
     }
+
     @Override
     protected void execute(CommandEvent event) {
         String guildID = event.getGuild().getId();

@@ -28,7 +28,7 @@ public class GenerateKeys extends Command {
     protected void execute(CommandEvent event) {
         if (Sql.activatedServersHas(event.getGuild().getId())) {
             if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(ADMINISTRATOR)) {
-                if(event.getArgs().isEmpty()) return;
+                if (event.getArgs().isEmpty()) return;
                 List<String> keysList = new ArrayList<>();
                 keysList.clear();
                 try {
