@@ -4,7 +4,6 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Role;
-import us.verif.bot.Helpers;
 import us.verif.bot.Sql;
 
 import java.text.SimpleDateFormat;
@@ -68,12 +67,12 @@ public class Auth extends Command {
                         } else {
                             cal.add(Calendar.MINUTE, amount);
                             expireDate = cal.getTime();
-                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + event.getGuild().getId() + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
+                            Sql.execute("Update", "insert into `verifiedusers` (`userID`,`guildID`,`role`,`expireDate`) values ('" + event.getAuthor().getId() + "','" + guildID + "','" + Sql.getKeyRole(inputtedKey) + "','" + dateFormat.format(expireDate) + "');");
 
                         }
                         break;
                     case "HOUR":
-                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
+                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), guildID, role)) {
                             cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.HOUR, amount);
                             expireDate = cal.getTime();
@@ -87,7 +86,7 @@ public class Auth extends Command {
                         }
                         break;
                     case "DAY":
-                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
+                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), guildID, role)) {
                             cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.DATE, amount);
                             expireDate = cal.getTime();
@@ -101,7 +100,7 @@ public class Auth extends Command {
                         }
                         break;
                     case "MONTH":
-                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
+                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), guildID, role)) {
                             cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.MONTH, amount);
                             expireDate = cal.getTime();
@@ -115,7 +114,7 @@ public class Auth extends Command {
                         }
                         break;
                     case "YEAR":
-                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), event.getGuild().getId(), role)) {
+                        if (Sql.userExistsInDatabaseWithGuildRole(event.getAuthor().getId(), guildID, role)) {
                             cal.setTime(Sql.getUserExpireDate(event.getAuthor().getId(), guildID));
                             cal.add(Calendar.YEAR, amount);
                             expireDate = cal.getTime();
