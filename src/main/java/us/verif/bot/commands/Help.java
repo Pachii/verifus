@@ -18,32 +18,33 @@ public class Help extends Command {
     protected void execute(CommandEvent event) {
         if (event.getArgs().isEmpty()) {
             EmbedBuilder helpMenu = new EmbedBuilder();
-            helpMenu.setTitle("Help Categories - /help `#`");
+            helpMenu.setTitle("Help Categories - /help `category`");
             helpMenu.setColor(Color.blue);
             helpMenu.addBlankField(true);
-            helpMenu.addField("1. Client Commands", "Commands for regular server members.", false);
-            helpMenu.addField("2. Server Admin Commands", "Commands used by server owners to manage Verifus.", false);
-            helpMenu.addField("3. Bot Owner Commands", "Commands that can only be used by Pach#6408. ", false);
-            helpMenu.addField("4. Verifus Information", "Information about this bot.", false);
-            helpMenu.addField("setup. Setup Help", "Bot setup instructions for new server owners.", false);
-            helpMenu.setFooter("Verifus v. " + Bot.version, "https://cdn.discordapp.com/attachments/523261515231395840/534487432939307024/checkmark.png");
+            helpMenu.addField("`client` - Client Commands", "Commands for regular server members.", false);
+            helpMenu.addField("`admin` - Server Admin Commands", "Commands used by server owners to manage Verifus.", false);
+            helpMenu.addField("`bot` - Bot Owner Commands", "Commands that can only be used by Pach#6408. ", false);
+            helpMenu.addField("`info` - Verifus Information", "Information about this bot.", false);
+            helpMenu.addField("`setup` - Setup Help", "Bot setup instructions for new server owners.", false);
+            helpMenu.addField("`stripe` - Stripe Setup Help", "Bot setup instructions for Stripe.", false);
+            helpMenu.setFooter("Verifus v. " + Bot.version, "https://cdn.discordapp.com/attachments/534926501053726751/541664248376459264/kisspng-facebook-social-media-verified-badge-logo-vanity-u-blue-checkmark-5aab5ca4825a51.44338811152.png");
             event.replyInDm(helpMenu.build());
-        } else if (event.getArgs().equals("1")) {
+        } else if (event.getArgs().equals("client")) {
             EmbedBuilder clientCommandsHelpMenu = new EmbedBuilder();
             clientCommandsHelpMenu.setTitle("Client Commands");
             clientCommandsHelpMenu.setColor(Color.blue);
             clientCommandsHelpMenu.addBlankField(true);
             clientCommandsHelpMenu.addField("/auth XXXXX-XXXXX-XXXXX-XXXXX-XXXXX-XXXXX", "To gain access to the #verification channel with a one-time use auth-key.", false);
             clientCommandsHelpMenu.addField("/check", "Check when your verification for a server will expire. (Type this in the server you want to check)", false);
+            clientCommandsHelpMenu.addField("/bind <email> <serverID>", "Binds an email to your account and activates a subscription.", false);
             event.replyInDm(clientCommandsHelpMenu.build());
-        } else if (event.getArgs().equals("2")) {
+        } else if (event.getArgs().equals("admin")) {
             EmbedBuilder serverOwnerHelpMenu = new EmbedBuilder();
-            serverOwnerHelpMenu.setTitle("Server Owner Commands");
+            serverOwnerHelpMenu.setTitle("Server Owner/Admin Commands");
             serverOwnerHelpMenu.setColor(Color.blue);
             serverOwnerHelpMenu.addBlankField(true);
             serverOwnerHelpMenu.addField("Important", "for command inputs with brackets, you need to put a custom value (without brackets).", false);
             serverOwnerHelpMenu.addField("/activate XXXXXX-XXXXXX-XXXXXX-XXXXXX", "Activate a one-time use serial. Type this in any channel in a server that you own that you want Verifus activated for.", false);
-            serverOwnerHelpMenu.addField("/database", "(Coming Soon) Generates a link for a database with every verified member, their verified role, and their expire date.", false);
             serverOwnerHelpMenu.addField("/add all:[role]", "Adds a role to everyone in the server.", false);
             serverOwnerHelpMenu.addField("/add role [existing role]:[role]", "Adds a role to everyone with an existing role.", false);
             serverOwnerHelpMenu.addField("/add member [@member]:[role]", "Adds a role to a member.", false);
@@ -53,8 +54,11 @@ public class Help extends Command {
             serverOwnerHelpMenu.addField("/generate [amount]:[time]:[role]", "Generate server auth-keys for your customers. Type this in any channel in the chosen server and they will be PMed to you. " +
                     "\n Example 1: `/generate 5:30 day:example role` will generate 5 auth-keys that puts the user in 'example role' for 30 days.", false);
             serverOwnerHelpMenu.addField("Accepted Time Values", "`second` `minute` `hour` `day` `month` `year` `lifetime`", false);
+            serverOwnerHelpMenu.addField("/stripekey", "Ties a Stripe API key to the server.", false);
+            serverOwnerHelpMenu.addField("/createproduct", "Creates a Stripe product.", false);
+            serverOwnerHelpMenu.addField("/createplan", "Creates a Stripe plan.", false);
             event.replyInDm(serverOwnerHelpMenu.build());
-        } else if (event.getArgs().equals("3")) {
+        } else if (event.getArgs().equals("bot")) {
             EmbedBuilder botOwnerHelpMenu = new EmbedBuilder();
             botOwnerHelpMenu.setTitle("Bot Owner Commands");
             botOwnerHelpMenu.setColor(Color.blue);
@@ -62,7 +66,7 @@ public class Help extends Command {
             botOwnerHelpMenu.addField("/genserial [time]", "Generates server activation serials for Verifus with a custom time.", false);
             botOwnerHelpMenu.addField("/revoke [guildID]", "Revokes a server's activation.", false);
             event.replyInDm(botOwnerHelpMenu.build());
-        } else if (event.getArgs().equals("4")) {
+        } else if (event.getArgs().equals("info")) {
             EmbedBuilder aboutHelpMenu = new EmbedBuilder();
             aboutHelpMenu.setTitle("About");
             aboutHelpMenu.setColor(Color.blue);
@@ -86,7 +90,7 @@ public class Help extends Command {
                     "roles people would get when they activate a key, then don't worry about this. Otherwise, make roles that you want and " +
                     "turn on some permissions, like send messages. If you turn on see channels, then they can see every public channel, " +
                     "but it's recommended that you see the next step.", false);
-            setupHelp.addField("Channel Permission Overrides", "This is the good stuff. If you go to your text channel settings, you " +
+            setupHelp.addField("Channel Permission Overrides", "If you go to your text channel settings, you " +
                     "can set permission overrides. For example, if there was a role called `monitors` and you want that role to only see " +
                     "channels with monitors, you would disable the view channels permission in the role, but override it with allow in the " +
                     "channels of your choice.", false);
@@ -94,6 +98,23 @@ public class Help extends Command {
                     "`/generate [amount]:[time]:[role]`. So if you wanted to generate 30 keys that had a length of 1 month that gives the role `test role`, " +
                     "you would type in the server server: `/generate 30:1 month:test role`. Make sure there are no excess spaces. Accepted time " +
                     "values are: `minute`, `hour`, `day`, `month`, `year`, `lifetime`.", false);
+            setupHelp.addField("More Help", "If you are still confused, please take time to go through the `/help` command, then " +
+                    "contact the dev `Pach#6408` if you still need assistance.", false);
+            event.replyInDm(setupHelp.build());
+        } else if (event.getArgs().equals("stripe")) {
+            EmbedBuilder setupHelp = new EmbedBuilder();
+            setupHelp.setTitle("Stripe Setup");
+            setupHelp.setColor(Color.blue);
+            setupHelp.addBlankField(true);
+            setupHelp.addField("First Time Setup For New Owners", "If this is the first time using Verifus, please type `/help setup` and read" +
+                    "until 'Channel Permission Overrides' so you have an idea on what to do.", false);
+            setupHelp.addField("Saving your Stripe API Key", "First, you need to tell the bot your Stripe secret API key. On the Stripe dashboard, go to Developers > API keys" +
+                    "and copy your secret key. Then, dm the bot `/stripekey <servername> <secretkey>`.", false);
+            setupHelp.addField("Create a product", "Verifus has an interactive product creation process. Just type `/createproduct` in your server and it will guide " +
+                    "you through the process. If you do not have any products in your Stripe account, you must do this first before adding a plan.", false);
+            setupHelp.addField("Create a plan", "Plans are what people will actually pay through. To create a plan, Just type `/createplan` in your server" +
+                    "and it will guide you through the process, just like the previous command.", false);
+            setupHelp.addField("Member's Activation", "members will use the `/bind` command to activate their subscription on the server.", false);
             setupHelp.addField("More Help", "If you are still confused, please take time to go through the `/help` command, then " +
                     "contact the dev `Pach#6408` if you still need assistance.", false);
             event.replyInDm(setupHelp.build());

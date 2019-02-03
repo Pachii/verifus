@@ -26,7 +26,7 @@ public class BotActivation extends Command {
     protected void execute(CommandEvent event) {
         String serial = event.getArgs();
         if (Sql.activationSerialsHas(serial)) {
-            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(ADMINISTRATOR)) {
+            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(MANAGE_SERVER)) {
                 if (event.getArgs().isEmpty()) return;
                 Date today = new Date();
                 Calendar cal = Calendar.getInstance();

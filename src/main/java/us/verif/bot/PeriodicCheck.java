@@ -1,12 +1,14 @@
 package us.verif.bot;
 
+import com.stripe.Stripe;
+import com.stripe.exception.StripeException;
+import com.stripe.model.Subscription;
 import net.dv8tion.jda.core.JDA;
+import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.entities.User;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.sql.*;
+import java.util.Collection;
 import java.util.TimerTask;
 
 public class PeriodicCheck extends TimerTask {
@@ -51,6 +53,34 @@ public class PeriodicCheck extends TimerTask {
             statement.executeUpdate("delete from `verifiedusers` where `expireDate` <= NOW();");
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+        for (String key : Sql.stripeKeyList()) {
+            try {
+                Stripe.apiKey = key;
+                Collection<String> subscriptions = Sql.getSubscriptions();
+
+                for (String activeSubscription : subscriptions) {
+                    Subscription subscription = Subscription.retrieve(activeSubscription);
+
+                    if (subscription == null) continue;
+
+                    if (subscription.getEndedAt() != null && subscription.getEndedAt() < System.currentTimeMillis() && !subscription.getStatus().equalsIgnoreCase("active")) {
+
+                        String expiredUser = Sql.getDiscordIdByCustomer(subscription.getCustomer());
+                        Helpers.sendPrivateMessage(jda.getUserById(expiredUser), "");
+                        String guildId = Sql.getGuildFromStripeKey(key);
+                        String role = subscription.getPlan().getNickname();
+                        Role removeRole = jda.getGuildById(guildId).getRolesByName(role, true).get(0);
+                        jda.getGuildById(guildId).getController().removeSingleRoleFromMember(jda.getGuildById(guildId).getMemberById(expiredUser), removeRole).queue();
+
+
+                        Sql.setSubscriptionActive(subscription.getId(), false);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

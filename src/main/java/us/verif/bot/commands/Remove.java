@@ -8,6 +8,7 @@ import net.dv8tion.jda.core.entities.Role;
 import us.verif.bot.Sql;
 
 import static net.dv8tion.jda.core.Permission.ADMINISTRATOR;
+import static net.dv8tion.jda.core.Permission.MANAGE_SERVER;
 
 public class Remove extends Command {
 
@@ -18,7 +19,7 @@ public class Remove extends Command {
     @Override
     protected void execute(CommandEvent event) {
         if (Sql.activatedServersHas(event.getGuild().getId())) {
-            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(ADMINISTRATOR)) {
+            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(MANAGE_SERVER)) {
                 if (event.getArgs().isEmpty()) return;
 
                 if (event.getArgs().split(":")[0].equalsIgnoreCase("all")) {
@@ -28,6 +29,9 @@ public class Remove extends Command {
                     for (Member member : event.getGuild().getMembers()) {
                         if (member.getRoles().contains(inputRole) && !member.hasPermission(Permission.ADMINISTRATOR)) {
                             event.getGuild().getController().removeSingleRoleFromMember(member, inputRole).queue();
+                        }
+                        if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
+                            Sql.execute("Update", "remove `userID` from `verifiedusers` where `userID` = '" + member.getUser().getId() + "`;");
                         }
                     }
                     event.reply("Done.");
@@ -42,6 +46,9 @@ public class Remove extends Command {
                         if (member.getRoles().contains(existingRole) && !member.hasPermission(Permission.ADMINISTRATOR)) {
                             event.getGuild().getController().removeSingleRoleFromMember(member, roleToRemove).queue();
                         }
+                        if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
+                            Sql.execute("Update", "remove `userID` from `verifiedusers` where `userID` = '" + member.getUser().getId() + "`;");
+                        }
                         event.reply("Done.");
                     }
                 }
@@ -51,6 +58,9 @@ public class Remove extends Command {
                     Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
                     event.reply("Working...");
                     Member member = event.getMessage().getMentionedMembers().get(0);
+                    if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
+                        Sql.execute("Update", "remove `userID` from `verifiedusers` where `userID` = '" + member.getUser().getId() + "`;");
+                    }
                     event.getGuild().getController().removeSingleRoleFromMember(member, inputRole).queue();
                     event.reply("Done.");
                 }

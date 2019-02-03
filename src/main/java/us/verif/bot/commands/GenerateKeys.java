@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.Random;
 
 import static net.dv8tion.jda.core.Permission.ADMINISTRATOR;
+import static net.dv8tion.jda.core.Permission.MANAGE_SERVER;
 
 public class GenerateKeys extends Command {
 
@@ -27,7 +28,7 @@ public class GenerateKeys extends Command {
     @Override
     protected void execute(CommandEvent event) {
         if (Sql.activatedServersHas(event.getGuild().getId())) {
-            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(ADMINISTRATOR)) {
+            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(MANAGE_SERVER)) {
                 if (event.getArgs().isEmpty()) return;
                 List<String> keysList = new ArrayList<>();
                 keysList.clear();
@@ -69,13 +70,7 @@ public class GenerateKeys extends Command {
                         sb.append(s);
                         sb.append("\n");
                     }
-                    EmbedBuilder embedKeys = new EmbedBuilder();
-                    embedKeys.setTitle("Key(s) Generated for server `" + event.getGuild().getName() + "`:");
-                    embedKeys.setColor(Color.green);
-                    embedKeys.addBlankField(true);
-                    embedKeys.addField("Info: `" + time + "` for role `" + role + "`", sb.toString(), false);
-                    event.replyInDm(embedKeys.build());
-                    event.replyInDm("Raw Key(s) (If on mobile):");
+                    event.replyInDm("Generated Keys: `" + time + "` for role `" + role + "`:");
                     event.replyInDm(sb.toString());
                 } catch (ArrayIndexOutOfBoundsException e) {
                     event.reply("Please specify the amount of keys, the length of time, and the role to give for the key.");
