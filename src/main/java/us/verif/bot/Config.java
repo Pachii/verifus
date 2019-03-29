@@ -13,29 +13,31 @@ public class Config {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }
-        Properties prop = new Properties();
-        OutputStream output = null;
+            Properties prop = new Properties();
+            OutputStream output = null;
 
-        try {
+            try {
 
-            output = new FileOutputStream("config.properties");
+                output = new FileOutputStream("config.properties");
 
-            prop.setProperty("token", "NTIzMjQ4MTM0NDc0OTU2ODEx.DyGEwA.NcJlNbzvHFKGP4hbyVNbTQlk9_k");
+                prop.setProperty("token", "here");
+                prop.setProperty("guildId", "here");
+                prop.setProperty("stripeWebhookPort", "here");
 
-            prop.store(output, null);
+                prop.store(output, null);
 
-        } catch (IOException io) {
-            io.printStackTrace();
-        } finally {
-            if (output != null) {
-                try {
-                    output.close();
-                } catch (IOException e) {
-                    e.printStackTrace();
+            } catch (IOException io) {
+                io.printStackTrace();
+            } finally {
+                if (output != null) {
+                    try {
+                        output.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
 
+            }
         }
     }
 
@@ -65,5 +67,60 @@ public class Config {
             }
         }
         return token;
+    }
+
+    public static String getGuildId() {
+
+        Properties prop = new Properties();
+        InputStream input = null;
+        String guildId = null;
+
+        try {
+
+            input = new FileInputStream("config.properties");
+
+            prop.load(input);
+
+            guildId = prop.getProperty("guildId");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return guildId;
+    }
+    public static String getStripeWebhookPort() {
+
+        Properties prop = new Properties();
+        InputStream input = null;
+        String guildId = null;
+
+        try {
+
+            input = new FileInputStream("config.properties");
+
+            prop.load(input);
+
+            guildId = prop.getProperty("stripeWebhookPort");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return guildId;
     }
 }

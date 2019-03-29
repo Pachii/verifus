@@ -3,7 +3,8 @@ package us.verif.bot.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
-import us.verif.bot.Sql;
+import us.verif.bot.sql.ActivationDatabase;
+import us.verif.bot.sql.Sql;
 
 import java.awt.*;
 import java.security.SecureRandom;
@@ -24,7 +25,7 @@ public class SerialCreation extends Command {
         String serial = randomUUID(24, 6, '-');
         String[] splitString = event.getArgs().split(" ");
         String time = splitString[0] + " " + splitString[1].toUpperCase();
-        Sql.execute("", "insert into `activationserials` (`serial`,`length`) values ('" + serial + "','" + time + "');");
+        ActivationDatabase.addSerial(serial, time);
 
         EmbedBuilder embedSerial = new EmbedBuilder();
         embedSerial.setTitle("Serial Generated");

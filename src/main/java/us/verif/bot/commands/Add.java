@@ -2,21 +2,28 @@ package us.verif.bot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
+import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
-import us.verif.bot.Sql;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import us.verif.bot.Config;
+import us.verif.bot.sql.ActivationDatabase;
+import us.verif.bot.sql.Sql;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import static net.dv8tion.jda.core.Permission.ADMINISTRATOR;
-import static net.dv8tion.jda.core.Permission.MANAGE_SERVER;
-
 public class Add extends Command {
+    private final EventWaiter waiter;
+    private JDA jda;
 
-    public Add() {
+    public Add(EventWaiter waiter, JDA jda) {
+        this.jda = jda;
+        this.waiter = waiter;
         super.name = "add";
     }
 
@@ -24,62 +31,226 @@ public class Add extends Command {
     protected void execute(CommandEvent event) {
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Calendar cal = Calendar.getInstance();
 
-        if (Sql.activatedServersHas(event.getGuild().getId())) {
-            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(MANAGE_SERVER)) {
-                if (event.getArgs().isEmpty()) return;
+        if (ActivationDatabase.isActivated()) {
+            if (jda.getGuildById(Config.getGuildId()).getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
 
-                if (event.getArgs().split(":")[0].equalsIgnoreCase("all")) {
-                    String role = event.getArgs().split(":")[1];
-                    Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
-                    event.reply("Working...");
-                    for (Member member : event.getGuild().getMembers()) {
-                        if (!member.hasPermission(Permission.ADMINISTRATOR)) {
-                            event.getGuild().getController().addSingleRoleToMember(member, inputRole).queue();
-                            if (!event.getArgs().split(":")[2].isEmpty()) {
-                                /*String time = event.getArgs().split(":")[2];
-                                String timeNum = time.split(" ")[0];
-                                String timeString = time.split(" ")[1];
-                                cal.setTime(new Date());
-                                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
-                                }
-                                Sql.execute("Update", "update `verifiedusers` set `expireDate` = '" + dateFormat.format(expireDate) + "' where `guildID` = '" + guildID + "' and `userID` = '" + event.getAuthor().getId() + "' and `role` = '" + role + "';");
-                                */
+                event.reply("@ the members that will be affected. Type `all` to select everyone in the server. Type `cancel` anytime to cancel.");
+                waiter.waitForEvent(MessageReceivedEvent.class,
+                        e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
+                        e -> {
+                            if (e.getMessage().getContentRaw().equals("cancel")) {
+                                event.reply("Process canceled.");
+                                return;
                             }
-                        }
-                    }
-                    event.reply("Done.");
-                }
+                            if (e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
+                                event.reply("Enter the time interval that the roles will last. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
+                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                        e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
+                                        e1 -> {
+                                            if (e1.getMessage().getContentRaw().equals("cancel")) {
+                                                event.reply("Process canceled.");
+                                                return;
+                                            }
+                                            ArrayList<String> acceptedValues = new ArrayList<>();
+                                            acceptedValues.add("second");
+                                            acceptedValues.add("minute");
+                                            acceptedValues.add("hour");
+                                            acceptedValues.add("day");
+                                            acceptedValues.add("month");
+                                            acceptedValues.add("year");
+                                            acceptedValues.add("lifetime");
+                                            String interval = e1.getMessage().getContentRaw().toUpperCase();
+                                            if (!acceptedValues.contains(interval.toLowerCase())) {
+                                                event.reply("Error: Invalid interval. Process canceled.");
+                                                return;
+                                            }
 
-                if (event.getArgs().split(" ")[0].equalsIgnoreCase("role")) {
-                    String role = event.getArgs().split(":")[1];
-                    Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
-                    Role roleToWork = event.getGuild().getRolesByName(event.getArgs().split(":")[1], true).get(0);
-                    event.reply("Working...");
-                    for (Member member : event.getGuild().getMembers()) {
-                        if (member.getRoles().contains(inputRole) && !member.hasPermission(Permission.ADMINISTRATOR)) {
-                            event.getGuild().getController().addSingleRoleToMember(member, roleToWork).queue();
-                            if (!event.getArgs().split(":")[2].isEmpty()) {
-                                //todo split time and sql update
+                                            event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the role will last for everyone.");
+                                            waiter.waitForEvent(MessageReceivedEvent.class,
+                                                    e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
+                                                    e2 -> {
+                                                        if (e2.getMessage().getContentRaw().equals("cancel")) {
+                                                            event.reply("Process canceled.");
+                                                            return;
+                                                        }
+                                                        int amount = Integer.parseInt(e2.getMessage().getContentRaw());
+
+                                                        event.reply("Enter the role name you would like to add for everyone. Type `none` for no time.");
+                                                        waiter.waitForEvent(MessageReceivedEvent.class,
+                                                                e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
+                                                                e3 -> {
+                                                                    if (e3.getMessage().getContentRaw().equals("cancel")) {
+                                                                        event.reply("Process canceled.");
+                                                                        return;
+                                                                    }
+                                                                    String roleName = e3.getMessage().getContentRaw();
+                                                                    Role inputRole = event.getGuild().getRolesByName(roleName, true).get(0);
+                                                                    String role = inputRole.getId();
+                                                                    event.reply("Working...");
+                                                                    for (Member member : event.getGuild().getMembers()) {
+                                                                        switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
+                                                                    }
+                                                                    event.reply("Done.");
+                                                                });
+                                                    });
+                                        });
                             }
-                        }
-                        event.reply("Done.");
-                    }
-                }
 
-                if (event.getArgs().split(" ")[0].equalsIgnoreCase("member")) {
-                    String role = event.getArgs().split(":")[1];
-                    Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
-                    event.reply("Working...");
-                    Member member = event.getMessage().getMentionedMembers().get(0);
-                    event.getGuild().getController().addSingleRoleToMember(member, inputRole).queue();
-                    if (!event.getArgs().split(":")[2].isEmpty()) {
-                        //todo split time and sql update
-                    }
-                    event.reply("Done.");
-                }
+                            if (!e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
+                                event.reply("Enter the time interval that the roles will last. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
+                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                        e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
+                                        e1 -> {
+                                            if (e1.getMessage().getContentRaw().equals("cancel")) {
+                                                event.reply("Process canceled.");
+                                                return;
+                                            }
+                                            ArrayList<String> acceptedValues = new ArrayList<>();
+                                            acceptedValues.add("second");
+                                            acceptedValues.add("minute");
+                                            acceptedValues.add("hour");
+                                            acceptedValues.add("day");
+                                            acceptedValues.add("month");
+                                            acceptedValues.add("year");
+                                            acceptedValues.add("lifetime");
+                                            String interval = e1.getMessage().getContentRaw().toUpperCase();
+                                            if (!acceptedValues.contains(interval.toLowerCase())) {
+                                                event.reply("Error: Invalid interval. Process canceled.");
+                                                return;
+                                            }
+
+                                            event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the role will last for the selected members.");
+                                            waiter.waitForEvent(MessageReceivedEvent.class,
+                                                    e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
+                                                    e2 -> {
+                                                        if (e2.getMessage().getContentRaw().equals("cancel")) {
+                                                            event.reply("Process canceled.");
+                                                            return;
+                                                        }
+                                                        int amount = Integer.parseInt(e2.getMessage().getContentRaw());
+
+                                                        event.reply("Enter the role name you would like to add for the selected members.");
+                                                        waiter.waitForEvent(MessageReceivedEvent.class,
+                                                                e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
+                                                                e3 -> {
+                                                                    if (e3.getMessage().getContentRaw().equals("cancel")) {
+                                                                        event.reply("Process canceled.");
+                                                                        return;
+                                                                    }
+                                                                    String roleName = e3.getMessage().getContentRaw();
+                                                                    Role inputRole = event.getGuild().getRolesByName(roleName, true).get(0);
+                                                                    String role = inputRole.getId();
+                                                                    event.reply("Working...");
+                                                                    for (Member member : e.getMessage().getMentionedMembers()) {
+                                                                        switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
+                                                                    }
+                                                                    event.reply("Done.");
+                                                                });
+                                                    });
+                                        });
+
+                            }
+                        });
             }
+        }
+    }
+
+    private void switchCheck(CommandEvent event, SimpleDateFormat dateFormat, String interval, int amount, Role inputRole, String role, Member member) {
+        event.getGuild().getController().addSingleRoleToMember(member, inputRole).queue();
+        Date expireDate;
+        String guildID = event.getGuild().getId();
+        Calendar cal = Calendar.getInstance();
+        switch (interval) {
+            case "SECOND":
+                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), role)) {
+                    cal.setTime(Sql.getUserExpireDate(member.getUser().getId()));
+                    cal.add(Calendar.SECOND, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                } else {
+                    cal.add(Calendar.SECOND, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                }
+                break;
+            case "MINUTE":
+                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), role)) {
+                    cal.setTime(Sql.getUserExpireDate(member.getUser().getId()));
+                    cal.add(Calendar.MINUTE, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                } else {
+                    cal.add(Calendar.MINUTE, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                }
+                break;
+            case "HOUR":
+                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), role)) {
+                    cal.setTime(Sql.getUserExpireDate(member.getUser().getId()));
+                    cal.add(Calendar.HOUR, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                } else {
+                    cal.add(Calendar.HOUR, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                }
+                break;
+            case "DAY":
+                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), role)) {
+                    cal.setTime(Sql.getUserExpireDate(member.getUser().getId()));
+                    cal.add(Calendar.DATE, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                } else {
+                    cal.add(Calendar.DATE, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                }
+                break;
+            case "MONTH":
+                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), role)) {
+                    cal.setTime(Sql.getUserExpireDate(member.getUser().getId()));
+                    cal.add(Calendar.MONTH, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                } else {
+                    cal.add(Calendar.MONTH, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                }
+                break;
+            case "YEAR":
+                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), role)) {
+                    cal.setTime(Sql.getUserExpireDate(member.getUser().getId()));
+                    cal.add(Calendar.YEAR, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                } else {
+                    cal.add(Calendar.YEAR, amount);
+                    expireDate = cal.getTime();
+                    Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+
+                }
+                break;
+            case "LIFETIME":
+                cal.add(Calendar.YEAR, 200);
+                expireDate = cal.getTime();
+                Sql.updateVerifiedUser(dateFormat.format(expireDate), event.getAuthor().getId(), role);
+                break;
         }
     }
 }

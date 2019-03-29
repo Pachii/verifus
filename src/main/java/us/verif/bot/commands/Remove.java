@@ -2,68 +2,83 @@ package us.verif.bot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import com.jagrosh.jdautilities.commons.waiter.EventWaiter;
 import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
-import us.verif.bot.Sql;
-
-import static net.dv8tion.jda.core.Permission.ADMINISTRATOR;
-import static net.dv8tion.jda.core.Permission.MANAGE_SERVER;
+import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import us.verif.bot.sql.ActivationDatabase;
+import us.verif.bot.sql.Sql;
 
 public class Remove extends Command {
+    private final EventWaiter waiter;
 
-    public Remove() {
+    public Remove(EventWaiter waiter) {
+        this.waiter = waiter;
         super.name = "remove";
     }
 
     @Override
     protected void execute(CommandEvent event) {
-        if (Sql.activatedServersHas(event.getGuild().getId())) {
-            if (event.getGuild().getOwnerId().equals(event.getAuthor().getId()) || event.getGuild().getMember(event.getAuthor()).hasPermission(MANAGE_SERVER)) {
-                if (event.getArgs().isEmpty()) return;
+        if (ActivationDatabase.isActivated()) {
+            if (event.getGuild().getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
 
-                if (event.getArgs().split(":")[0].equalsIgnoreCase("all")) {
-                    String role = event.getArgs().split(":")[1];
-                    Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
-                    event.reply("Working...");
-                    for (Member member : event.getGuild().getMembers()) {
-                        if (member.getRoles().contains(inputRole) && !member.hasPermission(Permission.ADMINISTRATOR)) {
-                            event.getGuild().getController().removeSingleRoleFromMember(member, inputRole).queue();
-                        }
-                        if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
-                            Sql.execute("Update", "remove `userID` from `verifiedusers` where `userID` = '" + member.getUser().getId() + "`;");
-                        }
-                    }
-                    event.reply("Done.");
-                }
+                event.reply("@ the members that will be affected. Type `all` to select everyone in the server. This command will also remove any authenticated members. Type `cancel` anytime to cancel.");
+                waiter.waitForEvent(MessageReceivedEvent.class,
+                        e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
+                        e -> {
+                            if (e.getMessage().getContentRaw().equals("cancel")) {
+                                event.reply("process canceled.");
+                                return;
+                            }
+                            if (e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
+                                event.reply("Enter the role name you would like to remove for everyone.");
+                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                        e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
+                                        e1 -> {
+                                            if (e1.getMessage().getContentRaw().equals("cancel")) {
+                                                event.reply("process canceled.");
+                                                return;
+                                            }
+                                            String role = e1.getMessage().getContentRaw();
+                                            Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
+                                            event.reply("Working...");
+                                            for (Member member : event.getGuild().getMembers()) {
+                                                if (member.getRoles().contains(inputRole)) {
+                                                    event.getGuild().getController().removeSingleRoleFromMember(member, inputRole).queue();
+                                                }
+                                                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), inputRole.getId())) {
+                                                    Sql.removeVerifiedUser(event.getAuthor().getId(), inputRole.getId());
+                                                }
+                                            }
+                                            event.reply("Done.");
+                                        });
+                            }
+                            if (!e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
+                                event.reply("Enter the role name you would like to remove for the mentioned members.");
+                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                        e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
+                                        e2 -> {
+                                            if (e2.getMessage().getContentRaw().equals("cancel")) {
+                                                event.reply("process canceled.");
+                                                return;
+                                            }
+                                            String role = e2.getMessage().getContentRaw();
+                                            Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
+                                            event.reply("Working...");
+                                            for (Member member : e.getMessage().getMentionedMembers()) {
+                                                if (member.getRoles().contains(inputRole)) {
+                                                    event.getGuild().getController().removeSingleRoleFromMember(member, inputRole).queue();
+                                                }
+                                                if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), inputRole.getId())) {
+                                                    Sql.removeVerifiedUser(event.getAuthor().getId(), inputRole.getId());
+                                                }
+                                            }
+                                            event.reply("Done.");
+                                        });
+                            }
+                        });
 
-                if (event.getArgs().split(" ")[0].equalsIgnoreCase("role")) {
-                    String role = event.getArgs().split(":")[1];
-                    Role existingRole = event.getGuild().getRolesByName(role, true).get(0);
-                    Role roleToRemove = event.getGuild().getRolesByName(event.getArgs().split(":")[1], true).get(0);
-                    event.reply("Working...");
-                    for (Member member : event.getGuild().getMembers()) {
-                        if (member.getRoles().contains(existingRole) && !member.hasPermission(Permission.ADMINISTRATOR)) {
-                            event.getGuild().getController().removeSingleRoleFromMember(member, roleToRemove).queue();
-                        }
-                        if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
-                            Sql.execute("Update", "remove `userID` from `verifiedusers` where `userID` = '" + member.getUser().getId() + "`;");
-                        }
-                        event.reply("Done.");
-                    }
-                }
-
-                if (event.getArgs().split(" ")[0].equalsIgnoreCase("member")) {
-                    String role = event.getArgs().split(":")[1];
-                    Role inputRole = event.getGuild().getRolesByName(role, true).get(0);
-                    event.reply("Working...");
-                    Member member = event.getMessage().getMentionedMembers().get(0);
-                    if (Sql.userExistsInDatabaseWithGuildRole(member.getUser().getId(), event.getGuild().getId(), role)) {
-                        Sql.execute("Update", "remove `userID` from `verifiedusers` where `userID` = '" + member.getUser().getId() + "`;");
-                    }
-                    event.getGuild().getController().removeSingleRoleFromMember(member, inputRole).queue();
-                    event.reply("Done.");
-                }
             }
         }
     }
