@@ -7,11 +7,14 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import us.verif.bot.sql.ActivationDatabase;
 import us.verif.bot.sql.Sql;
 
 public class Remove extends Command {
     private final EventWaiter waiter;
+    private final static Logger LOGGER = Logger.getLogger(Remove.class.getName());
 
     public Remove(EventWaiter waiter) {
         this.waiter = waiter;
@@ -20,6 +23,7 @@ public class Remove extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
         if (ActivationDatabase.isActivated()) {
             if (event.getGuild().getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
 
@@ -52,6 +56,8 @@ public class Remove extends Command {
                                                 }
                                             }
                                             event.reply("Done.");
+                                            LOGGER.log(Level.INFO, event.getAuthor() + " removed the role " + event.getGuild().getRoleById(role) + " to ALL.");
+
                                         });
                             }
                             if (!e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
@@ -75,6 +81,7 @@ public class Remove extends Command {
                                                 }
                                             }
                                             event.reply("Done.");
+                                            LOGGER.log(Level.INFO, event.getAuthor() + " removed the role " + event.getGuild().getRoleById(role) + " to mentioned members.");
                                         });
                             }
                         });

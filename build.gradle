@@ -27,10 +27,13 @@ dependencies {
     compile group: 'org.apache.spark', name: 'spark-core_2.12', version: '2.4.0'
     compile "com.sparkjava:spark-core:2.7.2"
     compile "org.simplejavamail:simple-java-mail:5.1.3"
+    compile group: 'com.paypal.sdk', name: 'paypal-core', version: '1.7.2'
+
 }
 
-configurations {
-    all*.exclude module : 'spring-boot-starter-logging'
+configurations.all {
+    exclude module : 'spring-boot-starter-logging'
+    exclude module: 'slf4j-log4j12'
 }
 
 apply plugin: 'java'

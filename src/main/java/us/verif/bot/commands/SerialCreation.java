@@ -3,8 +3,9 @@ package us.verif.bot.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import us.verif.bot.sql.ActivationDatabase;
-import us.verif.bot.sql.Sql;
 
 import java.awt.*;
 import java.security.SecureRandom;
@@ -13,6 +14,7 @@ import java.util.Random;
 public class SerialCreation extends Command {
     static final private String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final private Random rng = new SecureRandom();
+    private final static Logger LOGGER = Logger.getLogger(SerialCreation.class.getName());
 
     public SerialCreation() {
         super.name = "genserial";

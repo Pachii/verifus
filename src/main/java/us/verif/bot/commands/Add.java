@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Member;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import us.verif.bot.Config;
 import us.verif.bot.sql.ActivationDatabase;
 import us.verif.bot.sql.Sql;
@@ -20,6 +22,8 @@ import java.util.Date;
 public class Add extends Command {
     private final EventWaiter waiter;
     private JDA jda;
+    private final static Logger LOGGER = Logger.getLogger(Add.class.getName());
+
 
     public Add(EventWaiter waiter, JDA jda) {
         this.jda = jda;
@@ -29,6 +33,7 @@ public class Add extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
 
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
@@ -76,7 +81,7 @@ public class Add extends Command {
                                                         }
                                                         int amount = Integer.parseInt(e2.getMessage().getContentRaw());
 
-                                                        event.reply("Enter the role name you would like to add for everyone. Type `none` for no time.");
+                                                        event.reply("Enter the role name you would like to add for everyone.");
                                                         waiter.waitForEvent(MessageReceivedEvent.class,
                                                                 e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
                                                                 e3 -> {
@@ -92,6 +97,7 @@ public class Add extends Command {
                                                                         switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
                                                                     }
                                                                     event.reply("Done.");
+                                                                    LOGGER.log(Level.INFO, event.getAuthor() + " added the role " + jda.getRoleById(role) + " to ALL for " + amount + " " + interval + ".");
                                                                 });
                                                     });
                                         });
@@ -146,6 +152,7 @@ public class Add extends Command {
                                                                         switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
                                                                     }
                                                                     event.reply("Done.");
+                                                                    LOGGER.log(Level.INFO, event.getAuthor() + " added the role " + jda.getRoleById(role) + " to mentioned members for " + amount + " " + interval + ".");
                                                                 });
                                                     });
                                         });
@@ -159,7 +166,6 @@ public class Add extends Command {
     private void switchCheck(CommandEvent event, SimpleDateFormat dateFormat, String interval, int amount, Role inputRole, String role, Member member) {
         event.getGuild().getController().addSingleRoleToMember(member, inputRole).queue();
         Date expireDate;
-        String guildID = event.getGuild().getId();
         Calendar cal = Calendar.getInstance();
         switch (interval) {
             case "SECOND":

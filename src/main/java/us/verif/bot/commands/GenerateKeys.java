@@ -8,6 +8,8 @@ import net.dv8tion.jda.core.Permission;
 import net.dv8tion.jda.core.entities.Message;
 import net.dv8tion.jda.core.entities.User;
 import net.dv8tion.jda.core.events.message.MessageReceivedEvent;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import us.verif.bot.Config;
 import us.verif.bot.sql.ActivationDatabase;
 import us.verif.bot.sql.Sql;
@@ -25,6 +27,7 @@ public class GenerateKeys extends Command {
 
     static final private String ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
     final private Random rng = new SecureRandom();
+    private final static Logger LOGGER = Logger.getLogger(GenerateKeys.class.getName());
 
     private final EventWaiter waiter;
 
@@ -36,6 +39,7 @@ public class GenerateKeys extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
         if (ActivationDatabase.isActivated()) {
             if (jda.getGuildById(Config.getGuildId()).getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
 
@@ -116,6 +120,7 @@ public class GenerateKeys extends Command {
                                                                     User user = event.getAuthor();
                                                                     user.openPrivateChannel().queue((channel) -> channel.sendMessage("Generated Keys: `" + number + " " + interval + "` for role `" + e.getGuild().getRoleById(roleId).getName() + "`.").queue());
                                                                     user.openPrivateChannel().queue((channel) -> channel.sendFile(tempFile).queue(callback));
+                                                                    LOGGER.log(Level.INFO, event.getAuthor() + " generated " + batch + " keys for the role " + jda.getRoleById(roleId));
                                                                 } catch (Throwable ex) {
                                                                     ex.printStackTrace();
                                                                 }

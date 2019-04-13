@@ -3,7 +3,6 @@ package us.verif.bot.sql;
 import us.verif.bot.Config;
 import us.verif.bot.DataSource;
 
-import javax.validation.constraints.NotNull;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,12 +14,12 @@ public class Sql {
         try {
             Connection connection = DataSource.getConnection();
             connection.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement = connection.prepareStatement("select * from serverkeys where `key` = '" + key + "'");
+            PreparedStatement preparedStatement = connection.prepareStatement("select * from serverkeys where `key` = ?");
+            preparedStatement.setString(1, key);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 exists = true;
-                connection.close();
             }
             connection.close();
         } catch (SQLException e) { e.printStackTrace(); }
@@ -32,12 +31,12 @@ public class Sql {
         try {
             Connection connection = DataSource.getConnection();
             connection.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement = connection.prepareStatement("select roleId from serverkeys where `key` = '" + key + "'");
+            PreparedStatement preparedStatement = connection.prepareStatement("select roleId from serverkeys where `key` = ?");
+            preparedStatement.setString(1, key);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 result = resultSet.getString("roleId");
-                connection.close();
             }
             connection.close();
         } catch (SQLException e) { e.printStackTrace(); }
@@ -49,12 +48,12 @@ public class Sql {
         try {
             Connection connection = DataSource.getConnection();
             connection.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement = connection.prepareStatement("select length from serverkeys where `key` = '" + key + "'");
+            PreparedStatement preparedStatement = connection.prepareStatement("select length from serverkeys where `key` = ?");
+            preparedStatement.setString(1, key);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
                 result = resultSet.getString("length");
-                connection.close();
             }
             connection.close();
         } catch (SQLException e) { e.printStackTrace(); }
@@ -74,7 +73,6 @@ public class Sql {
                 Timestamp timestamp = resultSet.getTimestamp("expireDate");
                 if (timestamp != null) {
                     date = new Date(timestamp.getTime());
-                    connection.close();
                 }
             }
             connection.close();
@@ -150,7 +148,7 @@ public class Sql {
                 connection.close();
                 return true;
             }
-
+            connection.close();
         } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }

@@ -4,8 +4,14 @@ import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import org.simplejavamail.email.Email;
+import org.simplejavamail.email.EmailBuilder;
+import org.simplejavamail.mailer.MailerBuilder;
 import us.verif.bot.Config;
 import us.verif.bot.sql.ActivationDatabase;
+import us.verif.bot.sql.Sql;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -13,6 +19,7 @@ import java.util.Date;
 
 public class BotActivation extends Command {
     private JDA jda;
+    private final static Logger LOGGER = Logger.getLogger(BotActivation.class.getName());
 
     public BotActivation(JDA jda) {
         this.jda = jda;
@@ -22,6 +29,7 @@ public class BotActivation extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
         String serial = event.getArgs();
         if (ActivationDatabase.hasSerial(serial) && jda.getGuildById(Config.getGuildId()).getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
             if (event.getArgs().isEmpty()) return;
@@ -113,6 +121,7 @@ public class BotActivation extends Command {
             System.out.println(serial + amount + time + dateFormat.format(expireDate));
             event.reply("SUCCESS: You used the one-time activation serial `" + serial + "` to activate your server `" + jda.getGuildById(Config.getGuildId()).getName() + "`. Your " +
                     "`" + amount + " " + time + "` activation will expire on `" + dateFormat.format(expireDate) + "`. Type `/help` for setup info.");
+            LOGGER.log(Level.INFO, event.getAuthor() + " used the serial " + serial + ". The " + amount + " " + time + " activation expires on " + dateFormat.format(expireDate) + ".");
         }
     }
 }

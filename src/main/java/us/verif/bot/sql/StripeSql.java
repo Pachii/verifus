@@ -7,18 +7,20 @@ import java.sql.*;
 
 public class StripeSql {
     public static String getStripeApiKey() {
+        String key = null;
         try {
             Connection connection = DataSource.getConnection();
             connection.setCatalog(Config.getGuildId());
             Statement statement = connection.createStatement();
             ResultSet rs = statement.executeQuery("SELECT * FROM serverinfo");
             if (rs.next()) {
-                return rs.getString("stripeKey");
+                key = rs.getString("stripeKey");
             }
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return key;
     }
 
     public static boolean keyRegistered(String key) throws SQLException {
@@ -208,7 +210,7 @@ public class StripeSql {
         return emailHtml;
     }
 
-    public static String getStripeKeyByUser(String discordId) throws SQLException {
+    public static String getStripeKeyByDiscordId(String discordId) throws SQLException {
         Connection connection = DataSource.getConnection();
         connection.setCatalog(Config.getGuildId());
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM stripeusers where discordId=?");

@@ -22,6 +22,7 @@ public class Config {
 
                 prop.setProperty("token", "here");
                 prop.setProperty("guildId", "here");
+                prop.setProperty("stripeWebhookUrl", "here");
                 prop.setProperty("stripeWebhookPort", "here");
 
                 prop.store(output, null);
@@ -82,6 +83,33 @@ public class Config {
             prop.load(input);
 
             guildId = prop.getProperty("guildId");
+
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        } finally {
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return guildId;
+    }
+    public static String getStripeWebhookUrl() {
+
+        Properties prop = new Properties();
+        InputStream input = null;
+        String guildId = null;
+
+        try {
+
+            input = new FileInputStream("config.properties");
+
+            prop.load(input);
+
+            guildId = prop.getProperty("stripeWebhookUrl");
 
         } catch (IOException ex) {
             ex.printStackTrace();

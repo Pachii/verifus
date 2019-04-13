@@ -3,12 +3,17 @@ package us.verif.bot.commands;
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
 import net.dv8tion.jda.core.EmbedBuilder;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
 import us.verif.bot.Bot;
 import us.verif.bot.Config;
 
 import java.awt.*;
 
 public class Help extends Command {
+
+    private final static Logger LOGGER = Logger.getLogger(Help.class.getName());
+
     public Help() {
         super.name = "help";
         super.guildOnly = false;
@@ -17,6 +22,7 @@ public class Help extends Command {
 
     @Override
     protected void execute(CommandEvent event) {
+        LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
         if (event.getArgs().isEmpty()) {
             EmbedBuilder helpMenu = new EmbedBuilder();
             helpMenu.setTitle("Help Categories - /help `<category>`");
@@ -24,10 +30,10 @@ public class Help extends Command {
             helpMenu.addBlankField(true);
             helpMenu.addField("`client` - Client Commands", "Commands for regular server members.", false);
             helpMenu.addField("`admin` - Server Admin Commands", "Commands used by server owners to manage Verifus.", false);
-            helpMenu.addField("`~~permissions~~ (DEPRECATED)` - Bot command permissions", "Permissions for moderators of the server.", false);
             helpMenu.addField("`bot` - Bot Owner Commands", "Commands that can only be used by Pach#6408. ", false);
             helpMenu.addField("`setup` - Setup Help", "Bot setup instructions for new server owners.", false);
-            helpMenu.addField("`stripe` - Stripe Setup Help", "Bot setup instructions for Stripe.", false);
+            helpMenu.addField("`stripe` - stripe Setup Help", "Bot setup instructions for stripe.", false);
+            helpMenu.addField("`paypal` - PayPal Setup Help", "Bot setup instructions for PayPal (WIP).", false);
             helpMenu.addField("`info` - Bot Information", "Information about the bot.", false);
             helpMenu.setFooter("Verifus v. " + Bot.version, "https://cdn.discordapp.com/attachments/534926501053726751/541664248376459264/kisspng-facebook-social-media-verified-badge-logo-vanity-u-blue-checkmark-5aab5ca4825a51.44338811152.png");
             event.replyInDm(helpMenu.build());
@@ -36,7 +42,6 @@ public class Help extends Command {
             clientCommandsHelpMenu.setTitle("Client Commands");
             clientCommandsHelpMenu.setColor(Color.blue);
             clientCommandsHelpMenu.addBlankField(true);
-            clientCommandsHelpMenu.addField("/check", "Check when your verification for a server will expire. (Type this in the server you want to check)", false);
             clientCommandsHelpMenu.addField("/redeem <key>", "Binds a key to your account with a subscription for a role tied to the key.", false);
             clientCommandsHelpMenu.addField("/cancel <key>", "Cancels a subscription.", false);
             event.replyInDm(clientCommandsHelpMenu.build());
@@ -53,9 +58,7 @@ public class Help extends Command {
             serverOwnerHelpMenu.addField("/createproduct", "Creates a StripeSql product.", false);
             serverOwnerHelpMenu.addField("/createplan", "Creates a StripeSql plan.", false);
             serverOwnerHelpMenu.addField("/serverid", "Shows the server ID for servers with StripeSql.", false);
-            serverOwnerHelpMenu.addField("/roleid <role name>", "Shows the role ID for a role.", false);
-            serverOwnerHelpMenu.addField("/emailhtml <html>", "Sets the HTML body for the email. The email will automatically include the key at the end.", false);
-            serverOwnerHelpMenu.addField("/emailsubject <subject>", "Sets the subject for the email.", false);
+            serverOwnerHelpMenu.addField("/roleid <rolename>", "Shows the role ID for a role.", false);
             event.replyInDm(serverOwnerHelpMenu.build());
         } else if (event.getArgs().equals("bot")) {
             EmbedBuilder botOwnerHelpMenu = new EmbedBuilder();
@@ -63,18 +66,7 @@ public class Help extends Command {
             botOwnerHelpMenu.setColor(Color.blue);
             botOwnerHelpMenu.addBlankField(true);
             botOwnerHelpMenu.addField("/genserial <time>", "Generates server activation serials for Verifus with a custom time.", false);
-            botOwnerHelpMenu.addField("/revoke <guildId>", "Revokes a server's activation.", false);
             event.replyInDm(botOwnerHelpMenu.build());
-        } else if (event.getArgs().equals("permissions")) {
-            EmbedBuilder permissionsMenu = new EmbedBuilder();
-            permissionsMenu.setTitle("Bot Permissions Reference");
-            permissionsMenu.setColor(Color.blue);
-            permissionsMenu.addBlankField(true);
-            permissionsMenu.addField("Notice", "This is a hierarchy-based permissions system. Any permission group higher in place than the last will inherit permissions from that group.", false);
-            permissionsMenu.addField("ADMIN", "Access to all commands of the bot.", false);
-            permissionsMenu.addField("MODERATOR", "Access to only these commands: `/add` `/remove`", false);
-            permissionsMenu.addField("USER", "Access to all user commands found in `/help client`. Everyone is in this permission group by default.", false);
-            event.replyInDm(permissionsMenu.build());
         } else if (event.getArgs().equals("setup")) {
             EmbedBuilder setupHelp = new EmbedBuilder();
             setupHelp.setTitle("Setup");
@@ -120,8 +112,8 @@ public class Help extends Command {
                     "This is required, unless you want to send blank emails. NOTE: the key will always be attached to the end of the email." +
                     " If you don't know HTML, you can hire someone to code a nice email template. For more information, type `/help admin`.", false);
             setupHelp.addField("Webhook Setup (Important)", "The last step is to set the webhook URL in your StripeSql account. Go to your dashboard > Developers > Webhooks and click " +
-                    "add endpoint. The URL will be `http://verifus.ddns.net:" + Config.getStripeWebhookPort() + "/webhook` and click add endpoint. Now the StripeSql setup is finished.", false);
-            setupHelp.addField("Stripe Key Logic", "When a user receives their key in their email, they can DM the bot `/redeem <key>` and the key will be attached to their account " +
+                    "add endpoint. The URL will be `https://verifus.ddns.net/" + Config.getStripeWebhookUrl() + "` and click add endpoint. Now the stripe setup is finished.", false);
+            setupHelp.addField("stripe Key Logic", "When a user receives their key in their email, they can DM the bot `/redeem <key>` and the key will be attached to their account " +
                     "and they will get the role. If they somehow lose the role, they can do the same command and they will get their role back if it was removed. When a key is tied to a " +
                     "Discord account, it cannot be redeemed on another account, unless that person does `/unbind <key>` (which will also remove their role if they " +
                     "had it before), then it is free to use for anyone to redeem. After their subscription " +
@@ -136,7 +128,7 @@ public class Help extends Command {
             aboutHelpMenu.addBlankField(true);
             aboutHelpMenu.addField("Website", "https://verif.us/", false);
             aboutHelpMenu.addField("Developer", "Pach#6408", false);
-            aboutHelpMenu.addField("Lines of Code", "2742", false);
+            aboutHelpMenu.addField("Lines of Code", "2807", false);
             aboutHelpMenu.addField("Database", "MySQL 8.0", false);
             aboutHelpMenu.addField("Version", Bot.version, false);
             event.replyInDm(aboutHelpMenu.build());

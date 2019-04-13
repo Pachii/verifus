@@ -28,14 +28,12 @@ public class PeriodicCheck implements Runnable {
                 String guildId = Config.getGuildId();
                 User user = jda.getGuildById(guildId).getOwner().getUser();
                 String server = jda.getGuildById(guildId).getName();
-                user.openPrivateChannel().queue((channel) -> channel.sendMessage("Your Verifus activation for your server `" + server + "` has expired. \nVisit https://verif.us/ to purchase.").queue());
+                user.openPrivateChannel().queue((channel) -> channel.sendMessage("Your Verifus activation for your server `" + server + "` has expired.").queue());
             }
-            connection.close();
             Sql.deleteExpiredGuilds();
 
-            Connection connection1 = DataSource.getConnection();
-            connection1.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement1 = connection1.prepareStatement("select * from `verifiedusers` where `expireDate` <= NOW()");
+            connection.setCatalog(Config.getGuildId());
+            PreparedStatement preparedStatement1 = connection.prepareStatement("select * from `verifiedusers` where `expireDate` <= NOW()");
             ResultSet rs1 = preparedStatement1.executeQuery();
             while (rs1.next()) {
                 User user = jda.getUserById(rs1.getString("discordId"));
@@ -45,7 +43,7 @@ public class PeriodicCheck implements Runnable {
                 user.openPrivateChannel().queue((channel) -> channel.sendMessage("Your role `" + jda.getRoleById(role).getName() + "` in the server `" + serverName + "` has expired.").queue());
                 guild.getController().removeSingleRoleFromMember(guild.getMemberById(rs1.getString("discordId")), jda.getRoleById(role)).queue();
             }
-            connection1.close();
+            connection.close();
             Sql.deleteExpiredUsers();
 
         } catch (Throwable e) {

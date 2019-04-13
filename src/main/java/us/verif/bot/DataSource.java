@@ -10,7 +10,7 @@ public class DataSource {
 
     static {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://localhost:3306/?useSSL=false&allowPublicKeyRetrieval=true");
+        dataSource.setUrl("jdbc:mysql://localhost:3306/?useSSL=false&serverTimezone=EST&allowPublicKeyRetrieval=true");
         dataSource.setUsername("root");
         dataSource.setPassword("Verifus168");
     }

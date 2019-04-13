@@ -72,6 +72,7 @@ public class ActivationDatabase {
                     return new Date(timestamp.getTime());
                 }
             }
+            connection.close();
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
     }

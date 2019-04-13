@@ -11,8 +11,10 @@ import net.dv8tion.jda.core.AccountType;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.JDABuilder;
 import net.dv8tion.jda.core.entities.Game;
-import us.verif.bot.Stripe.StripeWebhook;
-import us.verif.bot.Stripe.commands.*;
+import org.apache.log4j.Level;
+import org.apache.log4j.Logger;
+import us.verif.bot.stripe.StripeWebhook;
+import us.verif.bot.stripe.commands.*;
 import us.verif.bot.commands.*;
 import us.verif.bot.events.GuildMemberJoin;
 import us.verif.bot.events.KeyCheck;
@@ -25,11 +27,10 @@ import java.util.concurrent.TimeUnit;
 
 public class Bot {
 
-    public static final String version = "0.1.0";
-    //NTM0OTI0NTgxNTg5MjIxMzg3.Dzz09w._8m0vdTwqAs5xsgHzeNwfoBzcmU
+    public static final String version = "0.2.0";
+    private final static Logger LOGGER = Logger.getLogger(Bot.class.getName());
 
     public static void main(String[] args) throws Exception {
-
         Setup.start();
 
         EventWaiter waiter = new EventWaiter();
@@ -40,33 +41,33 @@ public class Bot {
                 .setToken(Config.getToken())
                 .addEventListener(waiter)
                 .setGame(Game.of(Game.GameType.STREAMING, Sql.getBotStatus()))
-                .build();
+                .build().awaitReady();
 
         StripeWebhook webhook = new StripeWebhook(api);
         webhook.startListener();
 
         CommandClientBuilder builder = new CommandClientBuilder();
         builder.setPrefix("/");
-        builder.addCommands(new SerialCreation(), new GenerateKeys(waiter, api), new BotActivation(api), new Revoke(api), new Remove(waiter), new Add(waiter, api), new Help(), new Check(), new Redeem(api),
-                new CreatePlan(waiter, api), new CreateProduct(waiter, api), new StripeKey(api, waiter), new GuildId(), new Cancel(waiter), new RoleId(), new EmailHtml(api), new EmailSubject(api), new Unbind(api),
-                new SetStatus(api));
+        builder.addCommands(new SerialCreation(), new GenerateKeys(waiter, api), new BotActivation(api), new Remove(waiter), new Add(waiter, api), new Help(), new Redeem(api),
+                new CreatePlan(waiter, api), new CreateProduct(waiter, api), new StripeKey(api, waiter), new GuildId(), new Cancel(waiter), new RoleId(), new Unbind(api), new SetStatus(api));
         builder.setOwnerId("426839909421154314");
         builder.setHelpWord("unusedhelp");
         CommandClient commands = builder.build();
 
-        api.awaitReady();
-
         api.addEventListener(commands, new GuildMemberJoin(), new KeyCheck(api));
         new StripeWebhook(api);
 
-        PeriodicCheck periodicCheck = new PeriodicCheck(api);
         ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
         scheduledExecutorService.scheduleWithFixedDelay(() -> {
             try {
-                periodicCheck.run();
+                new PeriodicCheck(api).run();
             } catch (Throwable e) {
                 e.printStackTrace();
             }
-        }, 0, 1, TimeUnit.SECONDS);
+        }, 0, 1, TimeUnit.MINUTES);
+        LOGGER.log(Level.INFO, "\n      ___  __     ___       __  \n" +
+                "\\  / |__  |__) | |__  |  | /__` \n" +
+                " \\/  |___ |  \\ | |    \\__/ .__/ \n" +
+                "Version: " + version + "\nGuild: " + api.getGuildById(Config.getGuildId()) + "\nWebhook URL: /" + Config.getStripeWebhookUrl() + "\nWebhook Port: " + Config.getStripeWebhookPort());
     }
 }
