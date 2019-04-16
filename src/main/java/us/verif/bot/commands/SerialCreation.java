@@ -2,12 +2,9 @@ package us.verif.bot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
-import net.dv8tion.jda.core.EmbedBuilder;
-import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import us.verif.bot.sql.ActivationDatabase;
 
-import java.awt.*;
 import java.security.SecureRandom;
 import java.util.Random;
 
@@ -29,12 +26,7 @@ public class SerialCreation extends Command {
         String time = splitString[0] + " " + splitString[1].toUpperCase();
         ActivationDatabase.addSerial(serial, time);
 
-        EmbedBuilder embedSerial = new EmbedBuilder();
-        embedSerial.setTitle("Serial Generated");
-        embedSerial.setColor(Color.green);
-        embedSerial.addBlankField(true);
-        embedSerial.addField("Duration: " + time, serial, false);
-        event.replyInDm(embedSerial.build());
+        event.replyInDm(serial);
     }
 
     private char randomChar() {

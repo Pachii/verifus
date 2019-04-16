@@ -11,7 +11,7 @@ public class GuildId extends Command {
     private final static Logger LOGGER = Logger.getLogger(GuildId.class.getName());
 
     public GuildId() {
-        super.name = "serverid";
+        super.name = "guildid";
     }
 
     @Override

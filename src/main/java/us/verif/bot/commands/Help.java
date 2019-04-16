@@ -85,7 +85,7 @@ public class Help extends Command {
                     "channels with monitors, you would disable the view channels permission in the role, but override it with allow in the " +
                     "channels of your choice.", false);
             setupHelp.addField("Generating Keys", "The command to generate access keys is `/generate`. just type that in the server and " +
-                    "Verifus will guide you through the key creation process.", false);
+                    "Verifus will guide you through the key creation process. NON STRIPE only! If you're using Stripe don't use this!", false);
             setupHelp.addField("Redeeming Keys", "To redeem keys, members just have to DM the bot the key, nothing else, and they will get " +
                     "the role on the server. Again, it's recommended that there's a channel to teach new members how to redeem their activation key.", false);
             setupHelp.addField("More Help", "If you are still confused, please take time to go through the `/help` command, then " +
@@ -98,26 +98,18 @@ public class Help extends Command {
             setupHelp.addBlankField(true);
             setupHelp.addField("First Time Setup For New Owners", "If this is the first time using Verifus, please type `/help setup` and read" +
                     "until 'Channel Permission Overrides' so you have an idea on what to do.", false);
-            setupHelp.addField("Saving your StripeSql API Key", "First, you need to tell the bot your StripeSql secret API key. On the StripeSql dashboard, go to Developers > API keys" +
+            setupHelp.addField("Saving your Stripe API Key", "First, you need to tell the bot your Stripe secret API key. On the Stripe dashboard, go to Developers > API keys" +
                     "and copy your secret key. Then, DM the bot `/stripekey` and it will tell you what to do.", false);
-            setupHelp.addField("Create a product (OPTIONAL)", "Verifus has an interactive product creation process. Just type `/createproduct` in your server and it will guide " +
-                    "you through the process. If you do not have any products in your StripeSql account, you must do this first before adding a plan.", false);
-            setupHelp.addField("Create a plan (OPTIONAL)", "Plans are what people will actually pay through. To create a plan, Just type `/createplan` in your server" +
-                    "and it will guide you through the process, just like the previous command.", false);
-            setupHelp.addField("What if I already have a product/plan?", "If you're using for example a plugin that automatically creates a product and plan for you, just go in your " +
-                    "StripeSql dashboard > Billing > Products, and click on the product and change the plan's name to the ID of the role you want to give. To get the ID, type the command `/roleid <role name>`.", false);
-            setupHelp.addField("Member's Activation", "members will use the `/redeem <key>` command to activate their subscription on the server. " +
-                    "For more information, type `/help admin`.", false);
-            setupHelp.addField("Custom Email", "Members can receive custom emails that include their key. Check out the commands `/emailsubject <subject>` and `/emailhtml <html>`. " +
-                    "This is required, unless you want to send blank emails. NOTE: the key will always be attached to the end of the email." +
-                    " If you don't know HTML, you can hire someone to code a nice email template. For more information, type `/help admin`.", false);
-            setupHelp.addField("Webhook Setup (Important)", "The last step is to set the webhook URL in your StripeSql account. Go to your dashboard > Developers > Webhooks and click " +
-                    "add endpoint. The URL will be `https://verifus.ddns.net/" + Config.getStripeWebhookUrl() + "` and click add endpoint. Now the stripe setup is finished.", false);
-            setupHelp.addField("stripe Key Logic", "When a user receives their key in their email, they can DM the bot `/redeem <key>` and the key will be attached to their account " +
+            setupHelp.addField("Create a product and plan", "In the Stripe dashboard sidebar, go to Billing > Products and click new and make a product. Then, it will prompt you " +
+                    "to make a plan. For the plan nickname, only put the ID of the role that you want to give. To get the role ID, type `/roleid <rolename>` in your server, and then back in the" +
+                    " dashboard you can finalize the plan by setting the price, etc. If you are using an external source that links to your Stripe account, it may create a product and a plan " +
+                    "for you, and in that case just rename the plan to the role ID.", false);
+            setupHelp.addField("Webhook Setup (IMPORTANT)", "The last step is to set the webhook URL in your Stripe account. Go to your dashboard, Developers > Webhooks and click " +
+                    "add endpoint. The URL will be `https://verifus.ddns.net/" + Config.getStripeWebhookUrl() + "`, all events, and click add endpoint. Now the Stripe setup is finished.", false);
+            setupHelp.addField("How it works", "When a user receives their key in their email, they can DM the bot `/redeem <key>` and the key will be attached to their account " +
                     "and they will get the role. If they somehow lose the role, they can do the same command and they will get their role back if it was removed. When a key is tied to a " +
-                    "Discord account, it cannot be redeemed on another account, unless that person does `/unbind <key>` (which will also remove their role if they " +
-                    "had it before), then it is free to use for anyone to redeem. After their subscription " +
-                    "is canceled or failed to pay, their role will be removed and the key will be deleted from the database.", false);
+                    "Discord account, it cannot be redeemed on another account, unless that person does `/unbind <key>` (which will also remove their role if they had it before), then it is free to use for " +
+                    "anyone to redeem. After their subscription is canceled or failed to pay, their role will be removed and the key will be deleted from the database.", false);
             setupHelp.addField("More Help", "If you are still confused, please take time to go through the `/help` command, then " +
                     "contact the dev `Pach#6408` if you still need assistance.", false);
             event.replyInDm(setupHelp.build());

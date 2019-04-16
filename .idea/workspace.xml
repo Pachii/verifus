@@ -2,83 +2,30 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="8d45f05f-6893-4bad-8d56-c514a09533d5" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreatePlan.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/resources/log4j.properties" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/fileHashes/fileHashes.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/classAnalysis.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/javaCompile.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/javaCompile/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/4.10/taskHistory/taskHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/Bot.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/Bot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/Config.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/PeriodicCheck.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/PeriodicCheck.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Add.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Add.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/BotActivation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/BotActivation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Check.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/GenerateKeys.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/GenerateKeys.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Help.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Help.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Remove.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Remove.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/Revoke.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/SerialCreation.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/commands/SerialCreation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/events/GuildMemberJoin.class" beforeDir="false" afterPath="$PROJECT_DIR$/build/classes/java/main/us/verif/bot/events/GuildMemberJoin.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/distributions/Application-shadow.tar" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/distributions/Application-shadow.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/distributions/Application.tar" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/Application.tar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/distributions/Application.zip" beforeDir="false" afterPath="$PROJECT_DIR$/build/distributions/Application.zip" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/libs/Application.jar" beforeDir="false" afterPath="$PROJECT_DIR$/build/libs/Application.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/scripts/Application" beforeDir="false" afterPath="$PROJECT_DIR$/build/scripts/Application" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build/scripts/Application.bat" beforeDir="false" afterPath="$PROJECT_DIR$/build/scripts/Application.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/Application.tar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/distributions/Application.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/libs/Application.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/resources/main/META-INF/MANIFEST.MF" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/scripts/Application" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/scripts/Application.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/scriptsShadow/Application" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/build/scriptsShadow/Application.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/config.properties" beforeDir="false" afterPath="$PROJECT_DIR$/config.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/Bot.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/Bot.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/Config.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/Config.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/PeriodicCheck.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/PeriodicCheck.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Add.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Add.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/BotActivation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/BotActivation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Check.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/GenerateKeys.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/GenerateKeys.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Help.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Help.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Remove.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Remove.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/Revoke.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/SerialCreation.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/commands/SerialCreation.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/classes/us/verif/bot/events/GuildMemberJoin.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/classes/us/verif/bot/events/GuildMemberJoin.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Bot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/Bot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Config.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/Config.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/DataSource.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/DataSource.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/PeriodicCheck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/PeriodicCheck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/StripeWebhook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/StripeWebhook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/Cancel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Cancel.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/CreatePlan.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/paypal/CreatePlan.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/CreateProduct.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreateProduct.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/EmailHtml.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/EmailSubject.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/GuildId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/Redeem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Redeem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/RoleId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/RoleId.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/StripeKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/Stripe/commands/Unbind.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Unbind.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Add.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Add.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/BotActivation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/BotActivation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Check.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/GenerateKeys.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/GenerateKeys.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Remove.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Remove.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Revoke.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SetStatus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SetStatus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/events/GuildMemberJoin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/events/GuildMemberJoin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/events/KeyCheck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/events/KeyCheck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/ActivationDatabase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/ActivationDatabase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/Setup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/Setup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/Sql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/Sql.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/StripeSql.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/sql/StripeSql.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreatePlan.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreateProduct.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.gradle/" />
     <ignored path="$PROJECT_DIR$/build/" />
@@ -161,23 +108,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="357">
-              <caret line="31" column="119" selection-start-line="31" selection-start-column="119" selection-end-line="31" selection-end-column="119" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/Bot.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="671">
-              <caret line="67" column="32" selection-start-line="67" selection-start-column="32" selection-end-line="67" selection-end-column="32" />
+            <state relative-caret-position="119">
+              <caret line="29" column="47" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -186,10 +121,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreatePlan.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1785">
-              <caret line="105" column="129" selection-start-line="105" selection-start-column="129" selection-end-line="105" selection-end-column="129" />
+            <state relative-caret-position="255">
+              <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -198,10 +133,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreateProduct.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Redeem.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="8">
-              <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+              <caret line="34" column="119" selection-start-line="34" selection-start-column="119" selection-end-line="34" selection-end-column="119" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -210,28 +145,10 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/config.properties">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/RoleId.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="1" column="26" selection-start-line="1" selection-start-column="26" selection-end-line="1" selection-end-column="26" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/BotActivation.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="306">
-              <caret line="33" column="39" selection-start-line="33" selection-start-column="39" selection-end-line="33" selection-end-column="39" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/sql/ActivationDatabase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="28" column="26" selection-start-line="28" selection-start-column="26" selection-end-line="28" selection-end-column="26" />
+            <state relative-caret-position="255">
+              <caret line="17" column="119" selection-start-line="17" selection-start-column="119" selection-end-line="17" selection-end-column="119" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -240,10 +157,37 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/Config.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2329">
-              <caret line="138" column="57" selection-start-line="138" selection-start-column="57" selection-end-line="138" selection-end-column="57" />
+            <state relative-caret-position="187">
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/StripeWebhook.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="374">
+              <caret line="126" column="34" selection-start-line="126" selection-start-column="34" selection-end-line="126" selection-end-column="34" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Cancel.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="643">
+              <caret line="43" column="58" selection-start-line="43" selection-start-column="58" selection-end-line="43" selection-end-column="58" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -251,8 +195,20 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2108">
-              <caret line="132" column="66" selection-start-line="132" selection-start-column="66" selection-end-line="132" selection-end-column="66" />
+            <state relative-caret-position="1921">
+              <caret line="113" column="88" selection-start-line="113" selection-start-column="88" selection-end-line="113" selection-end-column="88" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="221">
+              <caret line="19" selection-start-line="19" selection-end-line="19" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -323,10 +279,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Stripe/CreatePlan.java" />
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/OAuthConfig.java" />
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/resources/application.yml" />
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/security/SecurityConfiguration.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Stripe/Webhook.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Stripe/CreateProduct.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Stripe/Cancel.java" />
@@ -365,15 +317,19 @@
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SetStatus.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Check.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/BotActivation.java" />
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/GenerateKeys.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Add.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Remove.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/events/KeyCheck.java" />
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java" />
         <option value="$PROJECT_DIR$/config.properties" />
-        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/Bot.java" />
         <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreatePlan.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/StripeWebhook.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Cancel.java" />
+        <option value="$PROJECT_DIR$/src/main/java/us/verif/bot/Bot.java" />
       </list>
     </option>
   </component>
@@ -384,8 +340,8 @@
     </treeState>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="137" />
-    <option name="y" value="-12" />
+    <option name="x" value="204" />
+    <option name="y" value="-8" />
     <option name="width" value="1400" />
     <option name="height" value="1000" />
   </component>
@@ -397,36 +353,35 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="PackagesPane" />
       <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -434,7 +389,7 @@
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -443,34 +398,7 @@
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bot" type="462c0819:PsiDirectoryNode" />
-              <item name="events" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bot" type="462c0819:PsiDirectoryNode" />
-              <item name="paypal" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="bot" type="462c0819:PsiDirectoryNode" />
-              <item name="sql" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
@@ -479,25 +407,19 @@
             </path>
             <path>
               <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
+              <item name="verifus" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="bot" type="462c0819:PsiDirectoryNode" />
               <item name="stripe" type="462c0819:PsiDirectoryNode" />
               <item name="commands" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="verifus" type="b2602c69:ProjectViewProjectNode" />
-              <item name="verifus" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="PackagesPane" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -757,6 +679,12 @@
       <workItem from="1555184890553" duration="1811000" />
       <workItem from="1555193692825" duration="585000" />
       <workItem from="1555194939688" duration="879000" />
+      <workItem from="1555195844304" duration="84000" />
+      <workItem from="1555278070949" duration="666000" />
+      <workItem from="1555281033021" duration="4120000" />
+      <workItem from="1555294364310" duration="1412000" />
+      <workItem from="1555359356994" duration="2648000" />
+      <workItem from="1555369529327" duration="1469000" />
     </task>
     <task id="LOCAL-00001" summary="0.7.1">
       <created>1548726794848</created>
@@ -779,11 +707,18 @@
       <option name="project" value="LOCAL" />
       <updated>1553890690031</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="0.2.0">
+      <created>1555195917707</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1555195917707</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="315765000" />
+    <option name="totallyTimeSpent" value="326164000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -796,9 +731,8 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49155146" visible="true" weight="0.1652452" />
+      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49155146" visible="true" weight="0.1748401" />
       <window_info id="Structure" order="1" sideWeight="0.50844854" side_tool="true" weight="0.19829424" />
       <window_info id="Designer" order="2" />
       <window_info id="Image Layers" order="3" />
@@ -892,7 +826,8 @@
     <MESSAGE value="0.7.1" />
     <MESSAGE value="0.8.0 PRE" />
     <MESSAGE value="0.1.0" />
-    <option name="LAST_COMMIT_MESSAGE" value="0.1.0" />
+    <MESSAGE value="0.2.0" />
+    <option name="LAST_COMMIT_MESSAGE" value="0.2.0" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/gradlew.bat">
@@ -1104,16 +1039,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="76">
-          <caret line="26" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/sql/Sql.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="4029">
@@ -1126,36 +1051,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Check.java" />
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Revoke.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Add.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="154" column="178" selection-start-line="154" selection-start-column="178" selection-end-line="154" selection-end-column="178" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Cancel.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="354">
-          <caret line="26" lean-forward="true" selection-start-line="26" selection-end-line="26" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/RoleId.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="17" column="119" selection-start-line="17" selection-start-column="119" selection-end-line="17" selection-end-column="119" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/GenerateKeys.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="283">
@@ -1176,16 +1071,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/StripeWebhook.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="595">
-          <caret line="58" column="145" selection-start-line="58" selection-start-column="145" selection-end-line="58" selection-end-column="145" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/events/KeyCheck.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="391">
@@ -1196,36 +1081,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="18" column="119" selection-start-line="18" selection-start-column="119" selection-end-line="18" selection-end-column="119" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Redeem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="34" column="119" selection-start-line="34" selection-start-column="119" selection-end-line="34" selection-end-column="119" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="31" column="119" selection-start-line="31" selection-start-column="119" selection-end-line="31" selection-end-column="119" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreateProduct.java" />
     <entry file="file://$PROJECT_DIR$/config.properties">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="17">
@@ -1250,6 +1106,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreatePlan.java" />
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Add.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2329">
+          <caret line="154" column="178" selection-start-line="154" selection-start-column="178" selection-end-line="154" selection-end-column="178" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/Config.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2329">
@@ -1257,10 +1124,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/SerialCreation.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2108">
-          <caret line="132" column="66" selection-start-line="132" selection-start-column="66" selection-end-line="132" selection-end-column="66" />
+        <state relative-caret-position="221">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/StripeWebhook.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="374">
+          <caret line="126" column="34" selection-start-line="126" selection-start-column="34" selection-end-line="126" selection-end-column="34" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/StripeKey.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="187">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1274,20 +1161,50 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreateProduct.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/RoleId.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="8">
-          <caret line="23" column="34" selection-start-line="23" selection-start-column="34" selection-end-line="23" selection-end-column="34" />
+        <state relative-caret-position="255">
+          <caret line="17" column="119" selection-start-line="17" selection-start-column="119" selection-end-line="17" selection-end-column="119" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/CreatePlan.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Redeem.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1785">
-          <caret line="105" column="129" selection-start-line="105" selection-start-column="129" selection-end-line="105" selection-end-column="129" />
+        <state relative-caret-position="8">
+          <caret line="34" column="119" selection-start-line="34" selection-start-column="119" selection-end-line="34" selection-end-column="119" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/GuildId.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="17" column="42" selection-start-line="17" selection-start-column="42" selection-end-line="17" selection-end-column="42" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/commands/Help.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1921">
+          <caret line="113" column="88" selection-start-line="113" selection-start-column="88" selection-end-line="113" selection-end-column="88" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/stripe/commands/Cancel.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="643">
+          <caret line="43" column="58" selection-start-line="43" selection-start-column="58" selection-end-line="43" selection-end-column="58" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -1296,8 +1213,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/us/verif/bot/Bot.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="671">
-          <caret line="67" column="32" selection-start-line="67" selection-start-column="32" selection-end-line="67" selection-end-column="32" />
+        <state relative-caret-position="119">
+          <caret line="29" column="47" selection-start-line="29" selection-start-column="47" selection-end-line="29" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
