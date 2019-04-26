@@ -27,7 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Bot {
 
-    public static final String version = "0.2.2";
+    public static final String version = "0.2.5";
     private final static Logger LOGGER = Logger.getLogger(Bot.class.getName());
 
     public static void main(String[] args) throws Exception {
@@ -48,7 +48,7 @@ public class Bot {
 
         CommandClientBuilder builder = new CommandClientBuilder();
         builder.setPrefix("/");
-        builder.addCommands(new SerialCreation(), new GenerateKeys(waiter, api), new BotActivation(api), new Remove(waiter), new Add(waiter, api), new Help(), new Redeem(api), new StripeKey(api)
+        builder.addCommands(new SerialCreation(), new GenerateKeys(waiter, api), new BotActivation(api), new Remove(waiter), new Add(waiter, api), new Help(api), new Redeem(api), new StripeKey(api)
                 , new GuildId(), new Cancel(waiter), new RoleId(), new Unbind(api), new SetStatus(api));
         builder.setOwnerId("426839909421154314");
         builder.setHelpWord("unusedhelp");

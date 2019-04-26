@@ -39,126 +39,130 @@ public class Add extends Command {
 
         if (ActivationDatabase.isActivated()) {
             if (jda.getGuildById(Config.getGuildId()).getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
+                try {
 
-                event.reply("@ the members that will be affected. Type `all` to select everyone in the server. Type `cancel` anytime to cancel.");
-                waiter.waitForEvent(MessageReceivedEvent.class,
-                        e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
-                        e -> {
-                            if (e.getMessage().getContentRaw().equals("cancel")) {
-                                event.reply("Process canceled.");
-                                return;
-                            }
-                            if (e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
-                                event.reply("Enter the time interval that the roles will last. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
-                                waiter.waitForEvent(MessageReceivedEvent.class,
-                                        e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
-                                        e1 -> {
-                                            if (e1.getMessage().getContentRaw().equals("cancel")) {
-                                                event.reply("Process canceled.");
-                                                return;
-                                            }
-                                            ArrayList<String> acceptedValues = new ArrayList<>();
-                                            acceptedValues.add("second");
-                                            acceptedValues.add("minute");
-                                            acceptedValues.add("hour");
-                                            acceptedValues.add("day");
-                                            acceptedValues.add("month");
-                                            acceptedValues.add("year");
-                                            acceptedValues.add("lifetime");
-                                            String interval = e1.getMessage().getContentRaw().toUpperCase();
-                                            if (!acceptedValues.contains(interval.toLowerCase())) {
-                                                event.reply("Error: Invalid interval. Process canceled.");
-                                                return;
-                                            }
+                    event.reply("@ the members that will be affected. Type `all` to select everyone in the server. Type `cancel` anytime to cancel.");
+                    waiter.waitForEvent(MessageReceivedEvent.class,
+                            e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
+                            e -> {
+                                if (e.getMessage().getContentRaw().equals("cancel")) {
+                                    event.reply("Process canceled.");
+                                    return;
+                                }
+                                if (e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
+                                    event.reply("Enter the time interval that the roles will last. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
+                                    waiter.waitForEvent(MessageReceivedEvent.class,
+                                            e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
+                                            e1 -> {
+                                                if (e1.getMessage().getContentRaw().equals("cancel")) {
+                                                    event.reply("Process canceled.");
+                                                    return;
+                                                }
+                                                ArrayList<String> acceptedValues = new ArrayList<>();
+                                                acceptedValues.add("second");
+                                                acceptedValues.add("minute");
+                                                acceptedValues.add("hour");
+                                                acceptedValues.add("day");
+                                                acceptedValues.add("month");
+                                                acceptedValues.add("year");
+                                                acceptedValues.add("lifetime");
+                                                String interval = e1.getMessage().getContentRaw().toUpperCase();
+                                                if (!acceptedValues.contains(interval.toLowerCase())) {
+                                                    event.reply("Error: Invalid interval. Process canceled.");
+                                                    return;
+                                                }
 
-                                            event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the role will last for everyone.");
-                                            waiter.waitForEvent(MessageReceivedEvent.class,
-                                                    e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
-                                                    e2 -> {
-                                                        if (e2.getMessage().getContentRaw().equals("cancel")) {
-                                                            event.reply("Process canceled.");
-                                                            return;
-                                                        }
-                                                        int amount = Integer.parseInt(e2.getMessage().getContentRaw());
+                                                event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the role will last for everyone.");
+                                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                                        e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
+                                                        e2 -> {
+                                                            if (e2.getMessage().getContentRaw().equals("cancel")) {
+                                                                event.reply("Process canceled.");
+                                                                return;
+                                                            }
+                                                            int amount = Integer.parseInt(e2.getMessage().getContentRaw());
 
-                                                        event.reply("Enter the role name you would like to add for everyone.");
-                                                        waiter.waitForEvent(MessageReceivedEvent.class,
-                                                                e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
-                                                                e3 -> {
-                                                                    if (e3.getMessage().getContentRaw().equals("cancel")) {
-                                                                        event.reply("Process canceled.");
-                                                                        return;
-                                                                    }
-                                                                    String roleName = e3.getMessage().getContentRaw();
-                                                                    Role inputRole = event.getGuild().getRolesByName(roleName, true).get(0);
-                                                                    String role = inputRole.getId();
-                                                                    event.reply("Working...");
-                                                                    for (Member member : event.getGuild().getMembers()) {
-                                                                        switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
-                                                                    }
-                                                                    event.reply("Done.");
-                                                                    LOGGER.log(Level.INFO, event.getAuthor() + " added the role " + jda.getRoleById(role) + " to ALL for " + amount + " " + interval + ".");
-                                                                });
-                                                    });
-                                        });
-                            }
+                                                            event.reply("Enter the role name you would like to add for everyone.");
+                                                            waiter.waitForEvent(MessageReceivedEvent.class,
+                                                                    e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
+                                                                    e3 -> {
+                                                                        if (e3.getMessage().getContentRaw().equals("cancel")) {
+                                                                            event.reply("Process canceled.");
+                                                                            return;
+                                                                        }
+                                                                        String roleName = e3.getMessage().getContentRaw();
+                                                                        Role inputRole = event.getGuild().getRolesByName(roleName, true).get(0);
+                                                                        String role = inputRole.getId();
+                                                                        event.reply("Working...");
+                                                                        for (Member member : event.getGuild().getMembers()) {
+                                                                            switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
+                                                                        }
+                                                                        event.reply("Done.");
+                                                                        LOGGER.log(Level.INFO, event.getAuthor() + " added the role " + jda.getRoleById(role) + " to ALL for " + amount + " " + interval + ".");
+                                                                    });
+                                                        });
+                                            });
+                                }
 
-                            if (!e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
-                                event.reply("Enter the time interval that the roles will last. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
-                                waiter.waitForEvent(MessageReceivedEvent.class,
-                                        e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
-                                        e1 -> {
-                                            if (e1.getMessage().getContentRaw().equals("cancel")) {
-                                                event.reply("Process canceled.");
-                                                return;
-                                            }
-                                            ArrayList<String> acceptedValues = new ArrayList<>();
-                                            acceptedValues.add("second");
-                                            acceptedValues.add("minute");
-                                            acceptedValues.add("hour");
-                                            acceptedValues.add("day");
-                                            acceptedValues.add("month");
-                                            acceptedValues.add("year");
-                                            acceptedValues.add("lifetime");
-                                            String interval = e1.getMessage().getContentRaw().toUpperCase();
-                                            if (!acceptedValues.contains(interval.toLowerCase())) {
-                                                event.reply("Error: Invalid interval. Process canceled.");
-                                                return;
-                                            }
+                                if (!e.getMessage().getContentRaw().equalsIgnoreCase("all")) {
+                                    event.reply("Enter the time interval that the roles will last. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
+                                    waiter.waitForEvent(MessageReceivedEvent.class,
+                                            e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
+                                            e1 -> {
+                                                if (e1.getMessage().getContentRaw().equals("cancel")) {
+                                                    event.reply("Process canceled.");
+                                                    return;
+                                                }
+                                                ArrayList<String> acceptedValues = new ArrayList<>();
+                                                acceptedValues.add("second");
+                                                acceptedValues.add("minute");
+                                                acceptedValues.add("hour");
+                                                acceptedValues.add("day");
+                                                acceptedValues.add("month");
+                                                acceptedValues.add("year");
+                                                acceptedValues.add("lifetime");
+                                                String interval = e1.getMessage().getContentRaw().toUpperCase();
+                                                if (!acceptedValues.contains(interval.toLowerCase())) {
+                                                    event.reply("Error: Invalid interval. Process canceled.");
+                                                    return;
+                                                }
 
-                                            event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the role will last for the selected members.");
-                                            waiter.waitForEvent(MessageReceivedEvent.class,
-                                                    e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
-                                                    e2 -> {
-                                                        if (e2.getMessage().getContentRaw().equals("cancel")) {
-                                                            event.reply("Process canceled.");
-                                                            return;
-                                                        }
-                                                        int amount = Integer.parseInt(e2.getMessage().getContentRaw());
+                                                event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the role will last for the selected members.");
+                                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                                        e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
+                                                        e2 -> {
+                                                            if (e2.getMessage().getContentRaw().equals("cancel")) {
+                                                                event.reply("Process canceled.");
+                                                                return;
+                                                            }
+                                                            int amount = Integer.parseInt(e2.getMessage().getContentRaw());
 
-                                                        event.reply("Enter the role name you would like to add for the selected members.");
-                                                        waiter.waitForEvent(MessageReceivedEvent.class,
-                                                                e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
-                                                                e3 -> {
-                                                                    if (e3.getMessage().getContentRaw().equals("cancel")) {
-                                                                        event.reply("Process canceled.");
-                                                                        return;
-                                                                    }
-                                                                    String roleName = e3.getMessage().getContentRaw();
-                                                                    Role inputRole = event.getGuild().getRolesByName(roleName, true).get(0);
-                                                                    String role = inputRole.getId();
-                                                                    event.reply("Working...");
-                                                                    for (Member member : e.getMessage().getMentionedMembers()) {
-                                                                        switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
-                                                                    }
-                                                                    event.reply("Done.");
-                                                                    LOGGER.log(Level.INFO, event.getAuthor() + " added the role " + jda.getRoleById(role) + " to mentioned members for " + amount + " " + interval + ".");
-                                                                });
-                                                    });
-                                        });
+                                                            event.reply("Enter the role name you would like to add for the selected members.");
+                                                            waiter.waitForEvent(MessageReceivedEvent.class,
+                                                                    e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
+                                                                    e3 -> {
+                                                                        if (e3.getMessage().getContentRaw().equals("cancel")) {
+                                                                            event.reply("Process canceled.");
+                                                                            return;
+                                                                        }
+                                                                        String roleName = e3.getMessage().getContentRaw();
+                                                                        Role inputRole = event.getGuild().getRolesByName(roleName, true).get(0);
+                                                                        String role = inputRole.getId();
+                                                                        event.reply("Working...");
+                                                                        for (Member member : e.getMessage().getMentionedMembers()) {
+                                                                            switchCheck(event, dateFormat, interval, amount, inputRole, role, member);
+                                                                        }
+                                                                        event.reply("Done.");
+                                                                        LOGGER.log(Level.INFO, event.getAuthor() + " added the role " + jda.getRoleById(role) + " to mentioned members for " + amount + " " + interval + ".");
+                                                                    });
+                                                        });
+                                            });
 
-                            }
-                        });
+                                }
+                            });
+                } catch (Exception e) {
+                    event.reply("Error adding members." + "`" + e.getMessage() + "`");
+                }
             }
         }
     }

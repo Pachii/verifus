@@ -2,6 +2,7 @@ package us.verif.bot.commands;
 
 import com.jagrosh.jdautilities.command.Command;
 import com.jagrosh.jdautilities.command.CommandEvent;
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.Permission;
 import org.apache.log4j.Level;
@@ -13,6 +14,7 @@ import us.verif.bot.Config;
 import us.verif.bot.sql.ActivationDatabase;
 import us.verif.bot.sql.Sql;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -118,7 +120,6 @@ public class BotActivation extends Command {
                     break;
             }
             ActivationDatabase.deleteRegisteredSerial(serial);
-            System.out.println(serial + amount + time + dateFormat.format(expireDate));
             event.reply("SUCCESS: You used the one-time activation serial `" + serial + "` to activate your server `" + jda.getGuildById(Config.getGuildId()).getName() + "`. Your " +
                     "`" + amount + " " + time + "` activation will expire on `" + dateFormat.format(expireDate) + "`. Type `/help` for setup info.");
             LOGGER.log(Level.INFO, event.getAuthor() + " used the serial " + serial + ". The " + amount + " " + time + " activation expires on " + dateFormat.format(expireDate) + ".");

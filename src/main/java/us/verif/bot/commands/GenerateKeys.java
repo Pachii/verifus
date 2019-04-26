@@ -42,92 +42,95 @@ public class GenerateKeys extends Command {
         LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
         if (ActivationDatabase.isActivated()) {
             if (jda.getGuildById(Config.getGuildId()).getMemberById(event.getAuthor().getId()).hasPermission(Permission.ADMINISTRATOR)) {
-
                 event.reply("Enter the number of keys you would like to generate. Type `cancel` anytime to cancel.");
-                waiter.waitForEvent(MessageReceivedEvent.class,
-                        e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
-                        e -> {
-                            if (e.getMessage().getContentRaw().equals("cancel")) {
-                                event.reply("Key generation canceled.");
-                                return;
-                            }
-                            int batch = Integer.parseInt(e.getMessage().getContentRaw());
+                try {
+                    waiter.waitForEvent(MessageReceivedEvent.class,
+                            e -> e.getAuthor().equals(event.getAuthor()) && e.getChannel().equals(event.getChannel()),
+                            e -> {
+                                if (e.getMessage().getContentRaw().equals("cancel")) {
+                                    event.reply("Key generation canceled.");
+                                    return;
+                                }
+                                int batch = Integer.parseInt(e.getMessage().getContentRaw());
 
-                            event.reply("Enter the time interval of the keys. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
-                            waiter.waitForEvent(MessageReceivedEvent.class,
-                                    e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
-                                    e1 -> {
-                                        if (e1.getMessage().getContentRaw().equals("cancel")) {
-                                            event.reply("Key generation canceled.");
-                                            return;
-                                        }
-                                        ArrayList<String> acceptedValues = new ArrayList<>();
-                                        acceptedValues.add("second");
-                                        acceptedValues.add("minute");
-                                        acceptedValues.add("hour");
-                                        acceptedValues.add("day");
-                                        acceptedValues.add("month");
-                                        acceptedValues.add("year");
-                                        acceptedValues.add("lifetime");
-                                        String interval = e1.getMessage().getContentRaw();
-                                        if (!acceptedValues.contains(interval.toLowerCase())) {
-                                            event.reply("Error: Invalid interval. Creation canceled.");
-                                            return;
-                                        }
+                                event.reply("Enter the time interval of the keys. Accepted intervals: `second` `minute` `hour` `day` `month` `year` `lifetime`");
+                                waiter.waitForEvent(MessageReceivedEvent.class,
+                                        e1 -> e1.getAuthor().equals(event.getAuthor()) && e1.getChannel().equals(event.getChannel()),
+                                        e1 -> {
+                                            if (e1.getMessage().getContentRaw().equals("cancel")) {
+                                                event.reply("Key generation canceled.");
+                                                return;
+                                            }
+                                            ArrayList<String> acceptedValues = new ArrayList<>();
+                                            acceptedValues.add("second");
+                                            acceptedValues.add("minute");
+                                            acceptedValues.add("hour");
+                                            acceptedValues.add("day");
+                                            acceptedValues.add("month");
+                                            acceptedValues.add("year");
+                                            acceptedValues.add("lifetime");
+                                            String interval = e1.getMessage().getContentRaw();
+                                            if (!acceptedValues.contains(interval.toLowerCase())) {
+                                                event.reply("Error: Invalid interval. Creation canceled.");
+                                                return;
+                                            }
 
-                                        event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the activation will last.");
-                                        waiter.waitForEvent(MessageReceivedEvent.class,
-                                                e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
-                                                e2 -> {
-                                                    if (e2.getMessage().getContentRaw().equals("cancel")) {
-                                                        event.reply("Key generation canceled.");
-                                                        return;
-                                                    }
-                                                    int number = Integer.parseInt(e2.getMessage().getContentRaw());
+                                            event.reply("Enter the number of `" + interval.toLowerCase() + "s` that the activation will last.");
+                                            waiter.waitForEvent(MessageReceivedEvent.class,
+                                                    e2 -> e2.getAuthor().equals(event.getAuthor()) && e2.getChannel().equals(event.getChannel()),
+                                                    e2 -> {
+                                                        if (e2.getMessage().getContentRaw().equals("cancel")) {
+                                                            event.reply("Key generation canceled.");
+                                                            return;
+                                                        }
+                                                        int number = Integer.parseInt(e2.getMessage().getContentRaw());
 
-                                                    event.reply("Enter the role name for the keys.");
-                                                    waiter.waitForEvent(MessageReceivedEvent.class,
-                                                            e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
-                                                            e3 -> {
-                                                                if (e3.getMessage().getContentRaw().equals("cancel")) {
-                                                                    event.reply("Key generation canceled.");
-                                                                    return;
-                                                                }
-                                                                String roleId = jda.getGuildById(Config.getGuildId()).getRolesByName(e3.getMessage().getContentRaw(), true).get(0).getId();
-                                                                try {
-                                                                    jda.getGuildById(Config.getGuildId()).getRoleById(roleId);
-                                                                } catch (Throwable ex) {
-                                                                    event.reply("Error: Role does not exist. Creation canceled.");
-                                                                    return;
-                                                                }
-                                                                try {
-                                                                    List<String> keysList = new ArrayList<>();
-
-                                                                    for (int i = 0; i < batch; i++) {
-                                                                        String serial = randomUUID(30, 5, '-');
-                                                                        keysList.add(serial);
-                                                                        Sql.registerKey(serial, number + " " + interval.toUpperCase(), roleId);
+                                                        event.reply("Enter the role name for the keys.");
+                                                        waiter.waitForEvent(MessageReceivedEvent.class,
+                                                                e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
+                                                                e3 -> {
+                                                                    if (e3.getMessage().getContentRaw().equals("cancel")) {
+                                                                        event.reply("Key generation canceled.");
+                                                                        return;
                                                                     }
-                                                                    Writer writer;
-                                                                    File tempFile = File.createTempFile("keys-", ".txt");
-                                                                    writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8));
-                                                                    for (String s : keysList) {
-                                                                        writer.append(s);
-                                                                        writer.append("\n");
+                                                                    String roleId = jda.getGuildById(Config.getGuildId()).getRolesByName(e3.getMessage().getContentRaw(), true).get(0).getId();
+                                                                    try {
+                                                                        jda.getGuildById(Config.getGuildId()).getRoleById(roleId);
+                                                                    } catch (Throwable ex) {
+                                                                        event.reply("Error: Role does not exist. Creation canceled.");
+                                                                        return;
                                                                     }
-                                                                    writer.close();
-                                                                    Consumer<Message> callback = (response) -> tempFile.delete();
-                                                                    User user = event.getAuthor();
-                                                                    user.openPrivateChannel().queue((channel) -> channel.sendMessage("Generated Keys: `" + number + " " + interval + "` for role `" + e.getGuild().getRoleById(roleId).getName() + "`.").queue());
-                                                                    user.openPrivateChannel().queue((channel) -> channel.sendFile(tempFile).queue(callback));
-                                                                    LOGGER.log(Level.INFO, event.getAuthor() + " generated " + batch + " keys for the role " + jda.getRoleById(roleId));
-                                                                } catch (Throwable ex) {
-                                                                    ex.printStackTrace();
-                                                                }
-                                                            });
-                                                });
-                                    });
-                        });
+                                                                    try {
+                                                                        List<String> keysList = new ArrayList<>();
+
+                                                                        for (int i = 0; i < batch; i++) {
+                                                                            String serial = randomUUID(30, 5, '-');
+                                                                            keysList.add(serial);
+                                                                            Sql.registerKey(serial, number + " " + interval.toUpperCase(), roleId);
+                                                                        }
+                                                                        Writer writer;
+                                                                        File tempFile = File.createTempFile("keys-", ".txt");
+                                                                        writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(tempFile), StandardCharsets.UTF_8));
+                                                                        for (String s : keysList) {
+                                                                            writer.append(s);
+                                                                            writer.append("\n");
+                                                                        }
+                                                                        writer.close();
+                                                                        Consumer<Message> callback = (response) -> tempFile.delete();
+                                                                        User user = event.getAuthor();
+                                                                        user.openPrivateChannel().queue((channel) -> channel.sendMessage("Generated Keys: `" + number + " " + interval + "` for role `" + e.getGuild().getRoleById(roleId).getName() + "`.").queue());
+                                                                        user.openPrivateChannel().queue((channel) -> channel.sendFile(tempFile).queue(callback));
+                                                                        LOGGER.log(Level.INFO, event.getAuthor() + " generated " + batch + " keys for the role " + jda.getRoleById(roleId));
+                                                                    } catch (Throwable ex) {
+                                                                        ex.printStackTrace();
+                                                                    }
+                                                                });
+                                                    });
+                                        });
+                            });
+                } catch (Exception e) {
+                    event.reply("Error generating keys." + "`" + e.getMessage() + "`");
+                }
             }
         }
     }

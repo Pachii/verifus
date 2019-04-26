@@ -1,5 +1,6 @@
 package us.verif.bot.events;
 
+import net.dv8tion.jda.core.EmbedBuilder;
 import net.dv8tion.jda.core.JDA;
 import net.dv8tion.jda.core.entities.Role;
 import net.dv8tion.jda.core.events.message.priv.PrivateMessageReceivedEvent;
@@ -10,6 +11,7 @@ import us.verif.bot.Config;
 import us.verif.bot.Helpers;
 import us.verif.bot.sql.Sql;
 
+import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -134,8 +136,11 @@ public class KeyCheck extends ListenerAdapter {
             Role keyRole = jda.getGuildById(guildId).getRoleById(Sql.getKeyRole(inputtedKey));
             jda.getGuildById(guildId).getController().addSingleRoleToMember(jda.getGuildById(guildId).getMemberById(event.getAuthor().getId()), keyRole).queue();
 
-            Helpers.sendPrivateMessage(event.getAuthor(), "RECEIPT: You used the one-time activation key `" + inputtedKey +
-                    "` to gain access to `" + jda.getGuildById(guildId).getName() + "` with the role `" + jda.getGuildById(guildId).getRoleById(Sql.getKeyRole(inputtedKey)).getName() + "`. Your `" + storedTime + "` activation will expire on `" + dateFormat.format(expireDate) + "`.");
+            EmbedBuilder eb = new EmbedBuilder();
+            eb.setTitle("Receipt");
+            eb.setColor(Color.GREEN);
+            eb.addField("Key", inputtedKey, true).addField("Length", storedTime, false);
+            eb.addField("Role", keyRole.getName(), true).addField("Expires", expireDate.toString(), false);
             Sql.deleteRegisteredKey(inputtedKey);
             LOGGER.log(Level.INFO, event.getAuthor() + " used the key " + inputtedKey + " with the role " + jda.getGuildById(guildId).getRoleById(Sql.getKeyRole(inputtedKey)) + ". The " + storedTime + " activation expires on " + dateFormat.format(expireDate) + ".");
         }
