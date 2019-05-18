@@ -19,7 +19,7 @@ public class DataSource {
         dataSource.setPassword("Verifus168");
 
         try {
-            this.conn = DataSource.getDataSource().getConnection();
+            this.conn = dataSource.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,7 @@ public class DataSource {
      * @throws SQLException
      */
     public Connection getConnection() throws SQLException {
-        conn = (conn == null) ? DataSource.getDataSource().getConnection() : conn;
+        conn = (conn == null) ? dataSource.getConnection() : conn;
 
         return conn;
     }
