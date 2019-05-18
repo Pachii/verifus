@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class Setup {
     public static void start() {
-        try (Connection connection = DataSource.getConnection()) {
+        try (Connection connection = DataSource.getDataSource().getConnection()) {
             ArrayList<String> array = new ArrayList<>();
             array.add("CREATE DATABASE IF NOT EXISTS `verifus`");
             array.add("USE verifus");

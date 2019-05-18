@@ -12,7 +12,7 @@ public class Sql {
     public static boolean containsKey(String key) {
         boolean exists = false;
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select * from serverkeys where `key` = ?");
             preparedStatement.setString(1, key);
@@ -21,7 +21,7 @@ public class Sql {
             if (resultSet.next()) {
                 exists = true;
             }
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
         return exists;
     }
@@ -29,7 +29,7 @@ public class Sql {
     public static String getKeyRole(String key) {
         String result = null;
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select roleId from serverkeys where `key` = ?");
             preparedStatement.setString(1, key);
@@ -38,7 +38,7 @@ public class Sql {
             if (resultSet.next()) {
                 result = resultSet.getString("roleId");
             }
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
         return result;
     }
@@ -46,7 +46,7 @@ public class Sql {
     public static String getKeyTime(String key) {
         String result = null;
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select length from serverkeys where `key` = ?");
             preparedStatement.setString(1, key);
@@ -55,7 +55,7 @@ public class Sql {
             if (resultSet.next()) {
                 result = resultSet.getString("length");
             }
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
         return result;
     }
@@ -63,7 +63,7 @@ public class Sql {
     public static Date getUserExpireDate(String discordId) {
         Date date = new Date();
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select * from verifiedusers where discordId = ?");
             preparedStatement.setString(1, discordId);
@@ -75,14 +75,14 @@ public class Sql {
                     date = new Date(timestamp.getTime());
                 }
             }
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
         return date;
     }
 
     public static ArrayList<Date> getUserExpireDateList(String discordId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select * from verifiedusers where discordId = ?");
             preparedStatement.setString(1, discordId);
@@ -94,7 +94,7 @@ public class Sql {
                 if (timestamp != null)
                     list.add(new Date(timestamp.getTime()));
             }
-            connection.close();
+
             return list;
         } catch (SQLException e) { e.printStackTrace(); }
         return null;
@@ -103,7 +103,7 @@ public class Sql {
     public static ArrayList<String> getUserRoles(String discordId) {
         ArrayList<String> arrayList = new ArrayList<>();
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select * from verifiedusers where discordId = ?");
             preparedStatement.setString(1, discordId);
@@ -111,7 +111,7 @@ public class Sql {
             ResultSet resultSet = preparedStatement.executeQuery();
             arrayList.clear();
             while (resultSet.next()) arrayList.add(resultSet.getString("roleId"));
-            connection.close();
+
             return arrayList;
         } catch (SQLException e) { e.printStackTrace(); }
         return arrayList;
@@ -119,7 +119,7 @@ public class Sql {
 
     public static boolean userExistsInDatabaseWithGuildRole(String discordId, String roleId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select expireDate from verifiedusers where discordId = ? and roleId = ?");
             preparedStatement.setString(1, discordId);
@@ -127,10 +127,10 @@ public class Sql {
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                connection.close();
+
                 return true;
             }
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
 
         return false;
@@ -138,110 +138,110 @@ public class Sql {
 
     public static boolean userExistsInDatabaseWithGuild(String discordId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("select expireDate from verifiedusers where discordId = ?");
             preparedStatement.setString(1, discordId);
 
             ResultSet resultSet = preparedStatement.executeQuery();
             if (resultSet.next()) {
-                connection.close();
+
                 return true;
             }
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
         return false;
     }
     public static void updateVerifiedUser(String expireDate, String discordId, String roleId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("update verifiedusers set expireDate = ? where discordId = ? and roleId = ?");
             preparedStatement.setString(1, expireDate);
             preparedStatement.setString(2, discordId);
             preparedStatement.setString(3, roleId);
             preparedStatement.executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
     public static void addVerifiedUser(String expireDate, String discordId, String roleId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("insert into verifiedusers (discordId,roleId,expireDate) values (?,?,?)");
             preparedStatement.setString(1, discordId);
             preparedStatement.setString(2, roleId);
             preparedStatement.setString(3, expireDate);
             preparedStatement.executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
     public static void deleteExpiredGuilds() {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog("verifus");
             connection.prepareStatement("delete from activatedservers where expireDate <= NOW()").executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
     public static void deleteExpiredUsers() {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             connection.prepareStatement("delete from verifiedusers where expireDate <= NOW()").executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
     public static void registerKey(String key, String length, String roleId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("insert into serverkeys (`key`,length,roleId) values (?,?,?)");
             preparedStatement.setString(1, key);
             preparedStatement.setString(2, length);
             preparedStatement.setString(3, roleId);
             preparedStatement.executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
     public static void removeVerifiedUser(String discordId, String roleId) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM verifiedusers WHERE discordId = ? AND role = ?");
             preparedStatement.setString(1, discordId);
             preparedStatement.setString(2, roleId);
             preparedStatement.executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
     public static void deleteRegisteredKey(String key) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM serverkeys WHERE `key`=?");
             preparedStatement.setString(1, key);
             preparedStatement.executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
     public static void setBotStatus(String status) {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog(Config.getGuildId());
             PreparedStatement preparedStatement = connection.prepareStatement("UPDATE serverinfo SET botStatus=? WHERE dataColumn = 1");
             preparedStatement.setString(1, status);
 
             preparedStatement.executeUpdate();
-            connection.close();
+
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
     public static String getBotStatus() throws SQLException {
-        Connection connection = DataSource.getConnection();
+        Connection connection = DataSource.getDataSource().getConnection();
         connection.setCatalog(Config.getGuildId());
         PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM serverinfo WHERE dataColumn = 1");
 
@@ -250,7 +250,7 @@ public class Sql {
 
         if (resultSet.next()) botStatus = resultSet.getString("botStatus");
 
-        connection.close();
+
         return botStatus;
     }
 }

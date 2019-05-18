@@ -19,7 +19,7 @@ public class PeriodicCheck implements Runnable {
 
     public void run() {
         try {
-            Connection connection = DataSource.getConnection();
+            Connection connection = DataSource.getDataSource().getConnection();
             connection.setCatalog("verifus");
             PreparedStatement preparedStatement = connection.prepareStatement("select * from `activatedservers` where `expireDate` <= NOW()");
             ResultSet rs = preparedStatement.executeQuery();
@@ -43,7 +43,7 @@ public class PeriodicCheck implements Runnable {
                 user.openPrivateChannel().queue((channel) -> channel.sendMessage("Your role `" + jda.getRoleById(role).getName() + "` in the server `" + serverName + "` has expired.").queue());
                 guild.getController().removeSingleRoleFromMember(guild.getMemberById(rs1.getString("discordId")), jda.getRoleById(role)).queue();
             }
-            connection.close();
+
             Sql.deleteExpiredUsers();
 
         } catch (Throwable e) {

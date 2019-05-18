@@ -21,6 +21,7 @@ import us.verif.bot.events.KeyCheck;
 import us.verif.bot.sql.Setup;
 import us.verif.bot.sql.Sql;
 
+import javax.xml.crypto.Data;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -31,6 +32,9 @@ public class Bot {
     private final static Logger LOGGER = Logger.getLogger(Bot.class.getName());
 
     public static void main(String[] args) throws Exception {
+        // Initiate DataSource
+        new DataSource();
+
         Setup.start();
 
         EventWaiter waiter = new EventWaiter();
