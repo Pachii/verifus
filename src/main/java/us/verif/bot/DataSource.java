@@ -13,13 +13,13 @@ public class DataSource {
     public DataSource() {
         dataSourceClass = this;
 
+        try {
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
         dataSource.setUrl("jdbc:mysql://localhost:3306/?useSSL=false&serverTimezone=EST&allowPublicKeyRetrieval=true");
         dataSource.setUsername("root");
         dataSource.setPassword("Verifus168");
 
-        try {
-            this.conn = dataSource.getConnection();
+        this.conn = dataSource.getConnection();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -41,7 +41,9 @@ public class DataSource {
      * @throws SQLException
      */
     public Connection getConnection() throws SQLException {
-        conn = (conn == null) ? dataSource.getConnection() : conn;
+        if(conn == null) {
+            conn = dataSource.getConnection();
+        }
 
         return conn;
     }
