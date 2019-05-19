@@ -250,7 +250,6 @@ public class Sql {
 
         if (resultSet.next()) botStatus = resultSet.getString("botStatus");
 
-
         return botStatus;
     }
 }

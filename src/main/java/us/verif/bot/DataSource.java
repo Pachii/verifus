@@ -41,7 +41,7 @@ public class DataSource {
      * @throws SQLException
      */
     public Connection getConnection() throws SQLException {
-        if(conn == null) {
+        if(conn.isClosed()) {
             conn = dataSource.getConnection();
         }
 
