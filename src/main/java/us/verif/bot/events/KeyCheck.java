@@ -8,9 +8,7 @@ import net.dv8tion.jda.core.hooks.ListenerAdapter;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import us.verif.bot.Config;
-import us.verif.bot.Helpers;
 import us.verif.bot.sql.Sql;
-
 import java.awt.*;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -142,7 +140,8 @@ public class KeyCheck extends ListenerAdapter {
             eb.addField("Key", inputtedKey, true).addField("Length", storedTime, false);
             eb.addField("Role", keyRole.getName(), true).addField("Expires", expireDate.toString(), false);
             Sql.deleteRegisteredKey(inputtedKey);
-            LOGGER.log(Level.INFO, event.getAuthor() + " used the key " + inputtedKey + " with the role " + jda.getGuildById(guildId).getRoleById(Sql.getKeyRole(inputtedKey)) + ". The " + storedTime + " activation expires on " + dateFormat.format(expireDate) + ".");
+            event.getChannel().sendMessage(eb.build()).queue();
+            LOGGER.log(Level.INFO, event.getAuthor() + " used the key " + inputtedKey + " with the role " + keyRole.getName() + ". The " + storedTime + " activation expires on " + dateFormat.format(expireDate) + ".");
         }
     }
 }

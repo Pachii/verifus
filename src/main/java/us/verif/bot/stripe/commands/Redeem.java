@@ -17,8 +17,8 @@ import java.sql.SQLException;
 
 public class Redeem extends Command {
 
-    private JDA jda;
     private final static Logger LOGGER = Logger.getLogger(Bot.class.getName());
+    private JDA jda;
 
 
     public Redeem(JDA jda) {
@@ -32,15 +32,24 @@ public class Redeem extends Command {
 
         String key = event.getArgs();
 
-        LOGGER.log(Level.INFO, event.getAuthor() + " executed the command '" + event.getMessage().getContentRaw() + "'");
-
         try {
-            if (StripeSql.containsStripeKey(key)) {
-                if (!StripeSql.keyRegistered(key)) {
-                    if (ActivationDatabase.isActivated()) {
+            if (ActivationDatabase.isActivated()) {
+                if (StripeSql.containsStripeKey(key)) {
+                    if (!StripeSql.keyRegistered(key)) {
                         Guild guild = jda.getGuildById(Config.getGuildId());
                         Member member = guild.getMemberById(event.getAuthor().getId());
-                        Role role = guild.getRoleById(StripeSql.getRoleByStripeKey(key));
+                        Role role;
+                        try {
+                            role = guild.getRoleById(StripeSql.getRoleByStripeKey(key));
+                        } catch (NullPointerException npe) {
+                            LOGGER.log(Level.WARN, event.getAuthor() + " tried to tie the key " + key + " but the role ID of the key does not exist (" + StripeSql.getRoleByStripeKey(key) + "). The key has been removed from the database.");
+                            StripeSql.removeStripeKey(key);
+                            return;
+                        } catch (NumberFormatException nfe) {
+                            LOGGER.log(Level.WARN, event.getAuthor() + " tried to tie the key " + key + " but the role of the key is in an invalid format (" + StripeSql.getRoleByStripeKey(key) + "). The key has been removed from the database.");
+                            StripeSql.removeStripeKey(key);
+                            return;
+                        }
                         try {
                             guild.getController().addSingleRoleToMember(member, role).queue();
                         } catch (Throwable e) {
@@ -48,29 +57,36 @@ public class Redeem extends Command {
                         }
                         StripeSql.registerStripeUser(event.getAuthor().getId(), key);
                         event.reply("Your key for the role `" + role.getName() + "` in `" + guild.getName() + "` has been tied to this Discord account.");
-                        LOGGER.log(Level.INFO, event.getAuthor() + " tied the key " + key);
-                    }
-                } else if (StripeSql.getUserByStripeKey(key).equals(event.getAuthor().getId())) {
-                    if (ActivationDatabase.isActivated()) {
+                        LOGGER.log(Level.INFO, event.getAuthor() + " tied the key " + key + " for the role " + role);
+                    } else if (StripeSql.getUserByStripeKey(key).equals(event.getAuthor().getId())) {
                         Guild guild = jda.getGuildById(Config.getGuildId());
                         Member member = guild.getMemberById(event.getAuthor().getId());
-                        Role role = guild.getRoleById(StripeSql.getRoleByStripeKey(key));
+                        Role role;
+                        try {
+                            role = guild.getRoleById(StripeSql.getRoleByStripeKey(key));
+                        } catch (NullPointerException npe) {
+                            LOGGER.log(Level.WARN, event.getAuthor() + " tried to tie the key " + key + " but the role ID of the key does not exist (" + StripeSql.getRoleByStripeKey(key) + "). The key has been removed from the database.");
+                            StripeSql.removeStripeKey(key);
+                            return;
+                        } catch (NumberFormatException nfe) {
+                            LOGGER.log(Level.WARN, event.getAuthor() + " tried to tie the key " + key + " but the role of the key is in an invalid format (" + StripeSql.getRoleByStripeKey(key) + "). The key has been removed from the database.");
+                            StripeSql.removeStripeKey(key);
+                            return;
+                        }
                         try {
                             guild.getController().addSingleRoleToMember(member, role).queue();
                         } catch (Throwable e) {
                             e.printStackTrace();
                         }
-                        event.reply("Your key for the role `" + role.getName() + "` in `" + guild.getName() + "` has already been tied to this Discord account. If the role was manually deleted for some reason," +
-                                " it was added back.");
+                        event.reply("Your key for the role `" + role.getName() + "` in `" + guild.getName() + "` has already been tied to this Discord account. If the role was manually deleted for some reason, it was added back.");
                         LOGGER.log(Level.INFO, event.getAuthor() + " tied the key " + key + " that was already tied to his account.");
+                    } else {
+                        event.reply("This key is tied to another Discord account.");
+                        LOGGER.log(Level.INFO, event.getAuthor() + " failed to tie the key " + key + " because it is already tied to " + jda.getUserById(StripeSql.getUserByStripeKey(key)));
                     }
+                } else {
+                    event.reply("This key does not exist.");
                 }
-                else {
-                    event.reply("This key is tied to another Discord account.");
-                    LOGGER.log(Level.INFO, event.getAuthor() + " failed to tie the key " + key + " because it is already tied to " + jda.getUserById(StripeSql.getUserByStripeKey(key)));
-                }
-            } else {
-                event.reply("This key does not exist.");
             }
         } catch (SQLException e) {
             e.printStackTrace();

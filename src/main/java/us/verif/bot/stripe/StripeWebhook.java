@@ -20,8 +20,7 @@ import java.util.EventListener;
 import java.util.List;
 import java.util.Random;
 
-import static spark.Spark.port;
-import static spark.Spark.post;
+import static spark.Spark.*;
 
 public class StripeWebhook implements EventListener {
 
@@ -51,10 +50,18 @@ public class StripeWebhook implements EventListener {
                         if (subscription == null) return "";
                         String key = StripeSql.getKeyBySubscription(subscriptionId);
                         String userId = StripeSql.getUserByStripeKey(key);
-                        String roleName = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key)).getName();
-                        Role removeRole = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key));
-                        jda.getGuildById(Config.getGuildId()).getController().removeSingleRoleFromMember(jda.getGuildById(Config.getGuildId()).getMemberById(userId), removeRole).queue();
                         StripeSql.removeKeyAndStripeUser(key);
+                        String roleNameInit = null;
+                        try {
+                            Role removeRole = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key));
+                            jda.getGuildById(Config.getGuildId()).getController().removeSingleRoleFromMember(jda.getGuildById(Config.getGuildId()).getMemberById(userId), removeRole).queue();
+                            roleNameInit = removeRole.getName();
+                        } catch (NullPointerException npe) {
+                            LOGGER.log(Level.WARN, "customer.subscription.deleted received, but the role could not be found. Check the role ID or if the role was deleted.");
+                        } catch (NumberFormatException nfe) {
+                            LOGGER.log(Level.WARN, "customer.subscription.deleted received, but the role ID is not entered correctly.");
+                        }
+                        String roleName = roleNameInit;
                         jda.getUserById(userId).openPrivateChannel().queue((channel) -> channel.sendMessage("Your subscription for the role `" + roleName + "` has been canceled.").queue());
                         LOGGER.log(Level.INFO, "customer.subscription.deleted received. Key " + key + " deleted for " + jda.getUserById(userId));
                         return "";
@@ -75,9 +82,17 @@ public class StripeWebhook implements EventListener {
                         if (subscription == null) return "";
                         String key = StripeSql.getKeyBySubscription(subscriptionId);
                         String userId = StripeSql.getUserByStripeKey(key);
-                        String roleName = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key)).getName();
-                        Role removeRole = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key));
-                        jda.getGuildById(Config.getGuildId()).getController().removeSingleRoleFromMember(jda.getGuildById(Config.getGuildId()).getMemberById(userId), removeRole).queue();
+                        String roleNameInit = null;
+                        try {
+                            Role removeRole = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key));
+                            roleNameInit = removeRole.getName();
+                            jda.getGuildById(Config.getGuildId()).getController().removeSingleRoleFromMember(jda.getGuildById(Config.getGuildId()).getMemberById(userId), removeRole).queue();
+                        } catch (NullPointerException npe) {
+                            LOGGER.log(Level.WARN, "invoice.payment_failed received, but the role could not be found. Check the role ID or if the role was deleted.");
+                        } catch (NumberFormatException nfe) {
+                            LOGGER.log(Level.WARN, "invoice.payment_failed received, but the role ID is not entered correctly.");
+                        }
+                        String roleName = roleNameInit;
                         String stripeKey = StripeSql.getKeyBySubscription(subscriptionId);
                         StripeSql.removeKeyAndStripeUser(stripeKey);
                         jda.getUserById(userId).openPrivateChannel().queue((channel) -> channel.sendMessage("Your payment for the role `" + roleName + "` has failed. Your role was removed.").queue());
@@ -102,8 +117,16 @@ public class StripeWebhook implements EventListener {
                     if (StripeSql.userHasStripeKey(StripeSql.getKeyBySubscription(subscriptionId))) {
                         String key = StripeSql.getKeyBySubscription(subscriptionId);
                         String userId = StripeSql.getUserByStripeKey(key);
-                        String roleName = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key)).getName();
-                        jda.getUserById(userId).openPrivateChannel().queue((channel) -> channel.sendMessage("Your role `" + roleName + "` has been automatically renewed.").queue());
+                        String roleName = null;
+                        try {
+                            roleName = jda.getGuildById(Config.getGuildId()).getRoleById(StripeSql.getRoleByKey(key)).getName();
+                        } catch (NullPointerException npe) {
+                            LOGGER.log(Level.WARN, "invoice.payment_succeeded received, but the role could not be found. Check the role ID or if the role was deleted.");
+                        } catch (NumberFormatException nfe) {
+                            LOGGER.log(Level.WARN, "invoice.payment_succeeded received, but the role ID is not entered correctly.");
+                        }
+                        String roleNameFinal = roleName;
+                        jda.getUserById(userId).openPrivateChannel().queue((channel) -> channel.sendMessage("Your role `" + roleNameFinal + "` has been automatically renewed.").queue());
                         LOGGER.log(Level.INFO, "invoice.payment_succeeded received. Key " + key + " renewed for " + jda.getUserById(userId));
                         return "";
                     }

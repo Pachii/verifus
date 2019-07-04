@@ -179,81 +179,14 @@ public class StripeSql {
         PreparedStatement preparedStatement2 = connection.prepareStatement("DELETE FROM stripeusers where `key`=?");
         preparedStatement2.setString(1, key);
         preparedStatement2.executeUpdate();
-
     }
 
-    public static String getEmailSubject() throws SQLException {
+    public static void removeStripeKey(String key) throws SQLException {
         Connection connection = DataSource.getDataSource().getConnection();
         connection.setCatalog(Config.getGuildId());
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM serverinfo");
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        String emailSubject = null;
-
-        if (resultSet.next()) emailSubject = resultSet.getString("emailSubject");
-
-
-        return emailSubject;
-    }
-
-    public static String getEmailHtml() throws SQLException {
-        Connection connection = DataSource.getDataSource().getConnection();
-        connection.setCatalog(Config.getGuildId());
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM serverinfo");
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        String emailHtml = null;
-
-        if (resultSet.next()) emailHtml = resultSet.getString("emailHtml");
-
-
-        return emailHtml;
-    }
-
-    public static String getStripeKeyByDiscordId(String discordId) throws SQLException {
-        Connection connection = DataSource.getDataSource().getConnection();
-        connection.setCatalog(Config.getGuildId());
-        PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM stripeusers where discordId=?");
-        preparedStatement.setString(1, discordId);
-
-        ResultSet resultSet = preparedStatement.executeQuery();
-        String key = null;
-
-        if (resultSet.next()) key = resultSet.getString("key");
-
-
-        return key;
-    }
-    public static void setEmailHtml(String html) {
-        try {
-            Connection connection = DataSource.getDataSource().getConnection();
-            connection.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE serverinfo SET emailHtml = ? WHERE dataColumn = 1");
-            preparedStatement.setString(1, html);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) { e.printStackTrace(); }
-    }
-    public static void setEmailSubject(String emailSubject) {
-        try {
-            Connection connection = DataSource.getDataSource().getConnection();
-            connection.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE serverinfo SET emailSubject = ? WHERE dataColumn = 1");
-            preparedStatement.setString(1, emailSubject);
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) { e.printStackTrace(); }
-    }
-    public static void setApiKey(String stripeApiKey) {
-        try {
-            Connection connection = DataSource.getDataSource().getConnection();
-            connection.setCatalog(Config.getGuildId());
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE serverinfo SET stripeKey=? WHERE dataColumn = 1");
-            preparedStatement.setString(1, stripeApiKey);
-
-            preparedStatement.executeUpdate();
-
-        } catch (SQLException e) { e.printStackTrace(); }
+        PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM stripekeys where `key`=?");
+        preparedStatement.setString(1, key);
+        preparedStatement.executeUpdate();
     }
 
     public static void unbindKey(String discordId, String key) {

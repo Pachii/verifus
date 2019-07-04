@@ -85,7 +85,7 @@ public class GenerateKeys extends Command {
                                                         }
                                                         int number = Integer.parseInt(e2.getMessage().getContentRaw());
 
-                                                        event.reply("Enter the role name for the keys.");
+                                                        event.reply("Enter the role ID for the role that will be given in the key. If unsure, do `/roleid <rolename>`");
                                                         waiter.waitForEvent(MessageReceivedEvent.class,
                                                                 e3 -> e3.getAuthor().equals(event.getAuthor()) && e3.getChannel().equals(event.getChannel()),
                                                                 e3 -> {
@@ -93,9 +93,9 @@ public class GenerateKeys extends Command {
                                                                         event.reply("Key generation canceled.");
                                                                         return;
                                                                     }
-                                                                    String roleId = jda.getGuildById(Config.getGuildId()).getRolesByName(e3.getMessage().getContentRaw(), true).get(0).getId();
+                                                                    String id = e3.getMessage().getContentRaw();
                                                                     try {
-                                                                        jda.getGuildById(Config.getGuildId()).getRoleById(roleId);
+                                                                        jda.getGuildById(Config.getGuildId()).getRoleById(id);
                                                                     } catch (Throwable ex) {
                                                                         event.reply("Error: Role does not exist. Creation canceled.");
                                                                         return;
@@ -106,7 +106,7 @@ public class GenerateKeys extends Command {
                                                                         for (int i = 0; i < batch; i++) {
                                                                             String serial = randomUUID(30, 5, '-');
                                                                             keysList.add(serial);
-                                                                            Sql.registerKey(serial, number + " " + interval.toUpperCase(), roleId);
+                                                                            Sql.registerKey(serial, number + " " + interval.toUpperCase(), id);
                                                                         }
                                                                         Writer writer;
                                                                         File tempFile = File.createTempFile("keys-", ".txt");
@@ -118,9 +118,9 @@ public class GenerateKeys extends Command {
                                                                         writer.close();
                                                                         Consumer<Message> callback = (response) -> tempFile.delete();
                                                                         User user = event.getAuthor();
-                                                                        user.openPrivateChannel().queue((channel) -> channel.sendMessage("Generated Keys: `" + number + " " + interval + "` for role `" + e.getGuild().getRoleById(roleId).getName() + "`.").queue());
+                                                                        user.openPrivateChannel().queue((channel) -> channel.sendMessage("Generated Keys: `" + number + " " + interval + "` for role `" + e.getGuild().getRoleById(id).getName() + "`.").queue());
                                                                         user.openPrivateChannel().queue((channel) -> channel.sendFile(tempFile).queue(callback));
-                                                                        LOGGER.log(Level.INFO, event.getAuthor() + " generated " + batch + " keys for the role " + jda.getRoleById(roleId));
+                                                                        LOGGER.log(Level.INFO, event.getAuthor() + " generated " + batch + " keys for the role " + jda.getRoleById(id));
                                                                     } catch (Throwable ex) {
                                                                         ex.printStackTrace();
                                                                     }

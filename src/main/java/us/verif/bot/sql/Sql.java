@@ -240,6 +240,18 @@ public class Sql {
         } catch (SQLException e) { e.printStackTrace(); }
     }
 
+    public static void setStripeApiKey(String key) {
+        try {
+            Connection connection = DataSource.getDataSource().getConnection();
+            connection.setCatalog(Config.getGuildId());
+            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE serverinfo SET stripeKey=? WHERE dataColumn = 1");
+            preparedStatement.setString(1, key);
+
+            preparedStatement.executeUpdate();
+
+        } catch (SQLException e) { e.printStackTrace(); }
+    }
+
     public static String getBotStatus() throws SQLException {
         Connection connection = DataSource.getDataSource().getConnection();
         connection.setCatalog(Config.getGuildId());

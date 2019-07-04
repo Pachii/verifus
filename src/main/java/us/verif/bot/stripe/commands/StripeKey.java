@@ -8,12 +8,12 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import us.verif.bot.Config;
 import us.verif.bot.sql.ActivationDatabase;
+import us.verif.bot.sql.Sql;
 
 public class StripeKey extends Command {
 
     private final static Logger LOGGER = Logger.getLogger(StripeKey.class.getName());
     private JDA jda;
-
 
     public StripeKey(JDA jda) {
         this.jda = jda;
@@ -31,6 +31,7 @@ public class StripeKey extends Command {
             return;
         }
         if (!ActivationDatabase.isActivated()) return;
+        Sql.setStripeApiKey(event.getArgs());
         event.reply("Successfully attached stripe secret key to server. Securely stored key in database.");
         LOGGER.log(Level.INFO, "stripe Secret API key `" + event.getArgs() + "` has been entered into the database.");
     }
